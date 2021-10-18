@@ -1,0 +1,91 @@
+@import "./OverviewBoxes.scss";
+
+.overview-diary {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    width: 100%;
+    max-width: 100%;
+    height: calc(100% - 42px);
+    padding: 0px 15px;
+
+    .diary-week {
+        margin: 12px 2px 13px 2px;
+        box-sizing: border-box;
+        text-align: center;
+        color: #757575;
+    }
+
+    .diary-rows {
+        display: flex;
+        flex-direction: column;
+        row-gap: calc(1px + (13 - 1) * ((100vw - 1550px) / (1920 - 1550)));
+
+        max-width: 100%;
+        align-items: stretch;
+        justify-content: stretch;
+        overflow: hidden;
+
+        .diary-row {
+            display: grid;
+            column-gap: 10px;
+            grid-template-columns: 35px calc(100% - 95px) 40px;
+
+            .diary-day-name {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                position: relative;
+                color: #494D5A;
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    width: 2px;
+                    height: 100%;
+                    right: -5px;
+                    top: 0;
+                    background-color: #494D5A;
+
+                }
+
+                &.day-today {
+                    color: #A6A9B5;
+
+                    &::after {
+                        background-color: #A6A9B5;
+                    }
+                }
+            }
+
+            .diary-book-name {
+                color: #D0D0D0;
+                white-space: nowrap;
+                max-width: 277px;
+                overflow: hidden;
+                font-size: var(--primary-font-size);
+                text-overflow: ellipsis;
+            }
+
+            .diary-book-rest {
+                font-size: 12px;
+                color: #7A7A7A;
+            }
+
+            .diary-pages-read {
+                display: flex;
+                align-items: center;
+                position: relative;
+                color: #D0D0D0;
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    width: 2px;
+                    height: 100%;
+                    left: -6px;
+                    background-color: #494B51;
+                }
+            }
+        }
+    }
+}

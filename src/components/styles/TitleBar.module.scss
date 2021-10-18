@@ -1,0 +1,60 @@
+.TitleBar {
+    z-index: 3000;
+    -webkit-app-region: drag;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 30px;
+    width: 100%;
+    background-color: #252525;
+    display: flex;
+    justify-content: space-between;
+    user-select: none;
+    * {
+        -webkit-app-region: no-drag;
+    }
+    .Buttons {
+        display: flex;
+        align-items: center;
+        column-gap: 10px;
+        color: #d0d0d0;
+        margin-left: 4px;
+        >div {
+            cursor: pointer;
+            user-select: none;
+            line-height: 30px;
+        }
+        .Current {
+            color: #C28642;
+        }
+        .Back {
+            margin-right: 30px;
+            width: 15px;
+            height: 100%;
+            padding: 0 5px;
+            svg {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+
+    .AppButtons {
+        display: flex;
+        align-items: center;
+        &>div {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0px 10px;
+            svg {
+            }
+            &:hover {
+                background-color: #121214;
+                &:last-child {
+                    background-color: #e23939;
+                }
+            }
+        }
+    }
+}

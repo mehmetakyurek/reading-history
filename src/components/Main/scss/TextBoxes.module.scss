@@ -1,0 +1,61 @@
+@import "./OverviewBoxes.scss";
+.overview-quote {
+    height: 100%;
+    & .text-overview-text { text-align: center; }
+}
+
+.overview-summaries {
+    height: 100%;
+    max-height: calc(100% - 42px);
+}
+
+.text-box {
+    display: grid;
+    grid-template-rows: minmax(0px, 1fr) auto;
+    width: 100%;
+    row-gap: 9.5px;
+    box-sizing: border-box;
+    padding: 20px 15px 20px 15px;
+    color: #D0D0D0;
+    max-height: 100%;
+    & .text-overview-text {
+        display: -webkit-box;
+                -webkit-line-clamp: 5;
+                -webkit-box-orient: vertical;
+        position: relative;
+        text-indent: 1em;
+        overflow: hidden;
+        padding-bottom: 4.5px;
+        &::after {
+            position: absolute;
+            content: "";
+            bottom: 0px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+
+            background-color: #D0D0D0;
+        }
+    }
+    & .text-overview-data {
+        margin-top: 9.5px;
+        display: grid;
+        grid-template: "book date" auto "author date" auto;
+        & .text-overview-book {
+            grid-area: book;
+        }
+        & .text-overview-author {
+            grid-area: author;
+            font-size: 14px;
+            color: #818181;
+        }
+        & .text-overview-date {
+            grid-area: date;
+            color: #818181;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+    }
+}

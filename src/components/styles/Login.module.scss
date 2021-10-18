@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap');
+
+.bg {
+    background-image: url("./img/bookbg.png");
+    background-size: cover;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+}
+.login-box {
+    width: 398px;
+    height: 211px;
+    position: absolute;
+    top: 18%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #1A1B20;
+    border-radius: 5px;
+    font-family: Nunito;
+    padding: 14px 40px 23px 40px;
+    box-sizing: border-box;
+    text-align: center;
+}
+.welcome-text {
+    font-size: 25px;
+    
+    color: #F5F5F5;
+    position: relative;
+    &::after {
+        position: absolute;
+        content: "";
+        width: 29px;
+        height: 2px;
+        border-radius: 1px;
+        bottom: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #f5f5f5;
+    }
+}
+
+.login-password {
+    margin-top: 30px;
+    padding: 9px 10px 9px 10px;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border:none;
+    outline: none;
+    border-radius: 2px;
+    font-size: 16px;
+}
+.login-button {
+    width: 139px;
+    height: 34px;
+    display: inline-block;
+    margin-top: 23px;
+    background-color: #F5F5F5;
+    border-radius: 2px;
+    line-height: 34px;
+    user-select: none;
+    cursor: pointer;
+}

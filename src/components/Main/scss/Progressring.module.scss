@@ -1,0 +1,14 @@
+.progress-ring {
+    width: 100%;
+    height: 100%;
+    & .progress-ring-bg {
+        stroke: #463731;
+    }
+    & .progress-ring-stroke {
+        stroke: #BC643C;
+    }
+    & .progress-ring-text {
+        fill: #D0D0D0;
+        
+    }
+}

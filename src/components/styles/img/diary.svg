@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="45" height="45" viewBox="0 0 45 45">
+  <defs>
+    <clipPath id="clip-path1">
+      <rect id="Rectangle_104" data-name="Rectangle 104" width="45" height="45" transform="translate(4.808 300)" fill="#4796db" stroke="#707070" stroke-width="1"/>
+    </clipPath>
+  </defs>
+  <g id="Mask_Group_10" data-name="Mask Group 10" transform="translate(-4.808 -300)" clip-path="url(#clip-path1)">
+    <g id="calendar" transform="translate(8 300)">
+      <g id="Group_249" data-name="Group 249" transform="translate(-2.505)">
+        <g id="Group_248" data-name="Group 248">
+          <path id="Path_20" data-name="Path 20" d="M38.513,3.516H36.468V0H33.06V3.516H10.565V0H7.157V3.516H5.112A5.2,5.2,0,0,0,0,8.789V39.727A5.2,5.2,0,0,0,5.112,45h33.4a5.2,5.2,0,0,0,5.112-5.273V8.789A5.2,5.2,0,0,0,38.513,3.516Zm1.7,36.211a1.734,1.734,0,0,1-1.7,1.758H5.112a1.734,1.734,0,0,1-1.7-1.758v-23.2H40.217Zm0-26.719H3.408V8.789a1.734,1.734,0,0,1,1.7-1.758H7.157v3.516h3.408V7.031H33.06v3.516h3.408V7.031h2.045a1.734,1.734,0,0,1,1.7,1.758Z" fill="#4796db"/>
+        </g>
+      </g>
+      <g id="Group_251" data-name="Group 251" transform="translate(6.68 20.215)">
+        <g id="Group_250" data-name="Group 250">
+          <rect id="Rectangle_106" data-name="Rectangle 106" width="3.516" height="3.516" fill="#4796db"/>
+        </g>
+      </g>
+      <g id="Group_253" data-name="Group 253" transform="translate(11.601 20.215)">
+        <g id="Group_252" data-name="Group 252">
+          <rect id="Rectangle_107" data-name="Rectangle 107" width="3.516" height="3.516" fill="#4796db"/>
+        </g>
+      </g>
+      <g id="Group_255" data-name="Group 255" transform="translate(17.55 20.215)">
+        <g id="Group_254" data-name="Group 254">
+          <rect id="Rectangle_108" data-name="Rectangle 108" width="3.516" height="3.516" fill="#4796db"/>
+        </g>
+      </g>
+      <g id="Group_257" data-name="Group 257" transform="translate(23.499 20.215)">
+        <g id="Group_256" data-name="Group 256">
+          <rect id="Rectangle_109" data-name="Rectangle 109" width="3.516" height="3.516" fill="#4796db"/>
+        </g>
+      </g>
+      <g id="Group_259" data-name="Group 259" transform="translate(28.42 20.215)">
+        <g id="Group_258" data-name="Group 258">
+          <rect id="Rectangle_110" data-name="Rectangle 110" width="3.516" height="3.516" fill="#4796db"/>
+        </g>
+      </g>
+      <g id="Group_261" data-name="Group 261" transform="translate(6.68 27.246)">
+        <g id="Group_260" data-name="Group 260">
+          <rect id="Rectangle_111" data-name="Rectangle 111" width="3.516" height="3.516" fill="#4796db"/>
+        </g>
+      </g>
+      <g id="Group_263" data-name="Group 263" transform="translate(11.601 27.246)">
+        <g id="Group_262" data-name="Group 262">
+          <rect id="Rectangle_112" data-name="Rectangle 112" width="3.516" height="3.516" fill="#4796db"/>
+        </g>
+      </g>
+      <g id="Group_265" data-name="Group 265" transform="translate(17.55 27.246)">
+        <g id="Group_264" data-name="Group 264">
+          <rect id="Rectangle_113" data-name="Rectangle 113" width="3.516" height="3.516" fill="#4796db"/>
+        </g>
+      </g>
+      <g id="Group_267" data-name="Group 267" transform="translate(23.499 27.246)">
+        <g id="Group_266" data-name="Group 266">
+          <rect id="Rectangle_114" data-name="Rectangle 114" width="3.516" height="3.516" fill="#4796db"/>
+        </g>
+      </g>
+      <g id="Group_269" data-name="Group 269" transform="translate(6.68 34.277)">
+        <g id="Group_268" data-name="Group 268">
+          <rect id="Rectangle_115" data-name="Rectangle 115" width="3.516" height="3.516" fill="#4796db"/>
+        </g>
+      </g>
+      <g id="Group_271" data-name="Group 271" transform="translate(11.601 34.277)">
+        <g id="Group_270" data-name="Group 270">
+          <rect id="Rectangle_116" data-name="Rectangle 116" width="3.516" height="3.516" fill="#4796db"/>
+        </g>
+      </g>
+      <g id="Group_273" data-name="Group 273" transform="translate(17.55 34.277)">
+        <g id="Group_272" data-name="Group 272">
+          <rect id="Rectangle_117" data-name="Rectangle 117" width="3.516" height="3.516" fill="#4796db"/>
+        </g>
+      </g>
+      <g id="Group_275" data-name="Group 275" transform="translate(23.499 34.277)">
+        <g id="Group_274" data-name="Group 274">
+          <rect id="Rectangle_118" data-name="Rectangle 118" width="3.516" height="3.516" fill="#4796db"/>
+        </g>
+      </g>
+      <g id="Group_277" data-name="Group 277" transform="translate(28.42 27.246)">
+        <g id="Group_276" data-name="Group 276">
+          <rect id="Rectangle_119" data-name="Rectangle 119" width="3.516" height="3.516" fill="#4796db"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
