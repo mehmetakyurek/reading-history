@@ -35,5 +35,3 @@ const TitleBar: FC<{ page?: string, auth?: boolean }> = props => {
 
 
 export default TitleBar;
-
-console.log(window);

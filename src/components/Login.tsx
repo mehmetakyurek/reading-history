@@ -1,27 +1,73 @@
 import classes from "./styles/Login.module.scss"
 import { Router, useHistory } from "react-router-dom"
-import { useState } from "react";
+import { useState, Component, FC, PropsWithChildren } from "react";
 import cn from "classnames"
+import TitleBar from "./TitleBar";
 
-export default function LoginPage() {
-  const [input, setInput] = useState("");
-  const history = useHistory();
-  const [loaded, setLoaded] = useState();
-  return <div className={cn(classes["container"])}>
-    <div className={classes.bg}></div>
-    <div className={classes["login-box"]}>
-      <div className={classes["welcome-text"]}>
-        Welcome
+export default class Login extends Component<{}, { val: string, auth: boolean, fileExists?: boolean, isEncrypted?: boolean }> {
+  constructor(props: PropsWithChildren<{}>) {
+    super(props);
+    this.state = {
+      auth: false,
+      val: ""
+    }
+  }
+
+  async componentDidMount() {
+    this.setState({
+      fileExists: await window.electron.fileExists(),
+      isEncrypted: await window.electron.isEncrypted()
+    })
+
+  }
+
+  render() {
+    return (this.state.auth || (this.state.fileExists === true && this.state.isEncrypted === false)) ?
+      <>{this.props.children}</> :
+      <div className={cn(classes.container)}>
+        <Loading enable={this.state.fileExists === undefined || this.state.isEncrypted === undefined} />
+        <TitleBar page="Login" />
+        <div className={classes.bg}></div>
+        <div className={cn(classes["login-box"], { [classes.newUser]: this.state.fileExists === false })}>
+          <div className={classes.password}>
+            <div className={classes["welcome-text"]}>
+              {this.state.fileExists === true ? "Welcome" : "Create Password"}
+            </div>
+            <input type="password" className={classes["login-password"]} value={this.state.val} onChange={e => this.setState({ val: e.currentTarget.value })} />
+            <div className={classes["login-button"]} onClick={async () => {
+              if (this.state.val.length >= 4) {
+                if (this.state.fileExists) {
+                  const login = await window.electron.login(this.state.val)
+                  this.setState({ auth: login })
+                  console.log(login);
+
+                } else if (await window.electron.createUser(this.state.val)) {
+                  this.setState({ auth: true })
+                }
+
+              }
+            }}>
+              Login
+            </div>
+          </div>
+          {!this.state.fileExists && <div className={classes.noPassword}>
+            <div className={classes['login-button']} onClick={async () => {
+              if ((await window.electron.createUser())) {
+                this.setState({
+                  auth: true
+                })
+              }
+            }}>Continue without password</div>
+            <ul className={classes.noPwdWarning}>
+              <li>App can be opened without password</li>
+              <li>Data won't be encrypted</li>
+            </ul>
+          </div>}
+        </div>
       </div>
-      <input type="password" className={classes["login-password"]} value={input} onChange={e => setInput(e.currentTarget.value)} />
-      <div className={classes["login-button"]} onClick={() => {
-        /*ipcRenderer.invoke("check", input).then(e => {
-          if (e === true)
-            history.push("/main")
-        })*/
-      }}>
-        Login
-      </div>
-    </div>
-  </div>
+  }
+}
+
+const Loading: FC<{ enable: boolean }> = (props) => {
+  return !props.enable ? <></> : <div className={classes.loginLoading}>Loading...</div>
 }

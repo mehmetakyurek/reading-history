@@ -6,11 +6,12 @@ import SummariesSlice from "./reducers/summaries"
 import QuotesSlice from "./reducers/quotes"
 
 import { persistStore, persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
+
+
 
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { generate } from "./DataGenerator"
-
+import { PersistorOptions } from "redux-persist/es/types"
 
 const RootReducer = combineReducers({
   main: MainReducer,
@@ -21,7 +22,7 @@ const RootReducer = combineReducers({
 
 const persistConfig = {
   key: 'root',
-  storage
+  storage: window.electron.storage
 }
 
 const persistedReducer = persistReducer(persistConfig, RootReducer) // Removed <any> type casting from RootReducer
@@ -33,9 +34,6 @@ export type RootState = ReturnType<typeof RootReducer>;
 
 export default store;
 
-export let persistor = persistStore(store)
-
-if (localStorage.getItem("generateData") === "true") {
-  localStorage.removeItem("generateData");
-  setTimeout(generate, 1000);
-}
+export let persistor = persistStore(store, ({
+  manualPersist: true
+} as unknown) as PersistorOptions)

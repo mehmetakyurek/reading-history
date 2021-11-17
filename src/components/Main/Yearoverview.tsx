@@ -37,7 +37,6 @@ export default function YearOverview() {
 
         return dataArray;
     })
-    console.log(YearData);
 
     return <div className={classes["year-overview"]}>
         <div className={classes["year-overview-year"]}>{data.date.getFullYear()}</div>

@@ -47,9 +47,7 @@ export default function MainPage() {
                 <ProgressRing radius={75} ></ProgressRing>
             </div>
             <div className={classes["yearly-data-container"]}>
-                <Profiler onRender={onRenderCallback} id={"Overview"}>
                 <YearOverview></YearOverview>
-                </Profiler>
             </div>
         </div>
         <div className={classes["bottom-icon-bar"]}>
@@ -60,7 +58,3 @@ export default function MainPage() {
         </div>
     </div>
 }
-
-function onRenderCallback(...params: unknown[]) {
-    console.log(params);
-  }

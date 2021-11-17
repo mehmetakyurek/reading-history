@@ -29,15 +29,20 @@ import { generate } from "./store/DataGenerator"
 
 import BookInput from './components/BookInput'; //Test
 import TitleBar from './components/TitleBar';
-function App() {
-  return (
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
+class App extends React.Component {
+  render() {
+    persistor.persist();
 
-        <Router initialEntries={["/"]}>
+    if (localStorage.getItem("generateData") === "true") {
+      localStorage.removeItem("generateData");
+      setTimeout(generate, 1000);
+    }
+    return <Provider store={store}>
+      <PersistGate persistor={persistor} loading={<div>loading</div>}>
+
+        <Router initialEntries={["/main"]}>
           <div className="App">
             <Switch>
-              <Route exact path="/"><Redirect to="/main" /><TitleBar page="Login" /><Login /></Route>
               <Route path="/main"><TitleBar page="Main" /><Main /></Route>
               <Route path="/plan"><TitleBar page="Plan" /><Plan /></Route>
               <Route path="/diary"><TitleBar page="Diary" /><Diary /></Route>
@@ -61,8 +66,8 @@ function App() {
           </div>
         </Router>
       </PersistGate>
-    </Provider >
-  );
+    </Provider>
+  }
 }
 
 export default App;

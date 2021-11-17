@@ -10,8 +10,8 @@
     max-height: 100vh;
 }
 .login-box {
-    width: 398px;
-    height: 211px;
+    display: flex;
+    flex-direction: row;
     position: absolute;
     top: 18%;
     left: 50%;
@@ -19,9 +19,17 @@
     background-color: #1A1B20;
     border-radius: 5px;
     font-family: Nunito;
-    padding: 14px 40px 23px 40px;
-    box-sizing: border-box;
     text-align: center;
+    > div {
+        width: 398px;
+        height: 211px;
+        padding: 14px 40px 23px 40px;
+        box-sizing: border-box;
+        .noPwdWarning {
+            text-align: left;
+            color: #D44343;
+        }
+    }
 }
 .welcome-text {
     font-size: 25px;
@@ -53,7 +61,7 @@
     font-size: 16px;
 }
 .login-button {
-    width: 139px;
+    min-width: 139px;
     height: 34px;
     display: inline-block;
     margin-top: 23px;
@@ -62,4 +70,19 @@
     line-height: 34px;
     user-select: none;
     cursor: pointer;
+    color: #252525;
+    padding: 0 10px;
+}
+.loginLoading {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #1A1B20f0;
+    z-index: 2999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(2px);
 }

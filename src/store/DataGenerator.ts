@@ -33,7 +33,6 @@ export const generateBook = () => {
     const date = new Date();
     const year = date.getFullYear();
     date.setMonth(0, 1);
-    console.log(date.getFullYear(), year);
 
     while (date.getFullYear() < year + 1) {
         const count = randomInteger(0, 7) === 0 ? randomInteger(1, 5) : 0;

@@ -1,8 +1,16 @@
 import { BrowserWindow, app, ipcMain } from "electron"
+import { Store } from "./store";
 
+let window;
+let store: Store;
 
-app.whenReady().then(() => {
-    const window = new BrowserWindow({
+Promise.all([app.whenReady(), Store.init()]).then((val) => {
+    store = val[1];
+    createWindow();
+})
+
+function createWindow() {
+    window = new BrowserWindow({
         frame: false,
         show: false,
         width: 1370,
@@ -13,11 +21,18 @@ app.whenReady().then(() => {
         }
     });
     window.setMenuBarVisibility(false);
-    window.loadURL("http://localhost:3000");
+    window.loadFile("../../build/index.html");
     window.webContents.on("did-finish-load", () => { setTimeout(() => window.show(), 200) })
     ipcMain.on("minimize", () => { window.minimize() });
     ipcMain.on("minmax", () => { window.isMaximized() ? window.unmaximize() : window.maximize() });
-    ipcMain.on("restart", () => { app.relaunch(); app.exit(0); })
-})
+    ipcMain.on("restart", () => { app.relaunch(); app.exit(0); });
+    ipcMain.handle("fileExists", () => store.fileExists())
+    ipcMain.handle("isEncrypted", () => store.isEncrypted())
+    ipcMain.handle("createUser", (_e, pwd) => store.createUser(pwd))
+    ipcMain.handle("login", (_e, pwd) => store.login(pwd))
+    ipcMain.handle("getItem", () => store.getItem())
+    ipcMain.handle("setItem", (_e, _k, data) => store.setItem(data))
+    ipcMain.handle("removeItem", () => store.removeItem())
+}
 
 ipcMain.on("close", () => { app.exit() });

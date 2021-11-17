@@ -45,7 +45,6 @@ const SummariesSlice = createSlice({
         },
         deleteSummary(state, action: PayloadAction<{ id: string }>) {
             const index = state.findIndex(e => action.payload.id === e.id);
-            console.log(index);
 
             if (index > -1) state.splice(index, 1);
         },
