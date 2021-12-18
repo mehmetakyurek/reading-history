@@ -1,7 +1,7 @@
 import { BrowserWindow, app, ipcMain } from "electron"
 import { Store } from "./store";
 
-let window;
+let window: BrowserWindow;
 let store: Store;
 
 Promise.all([app.whenReady(), Store.init()]).then((val) => {
@@ -21,8 +21,10 @@ function createWindow() {
         }
     });
     window.setMenuBarVisibility(false);
-    window.loadFile("../../build/index.html");
-    window.webContents.on("did-finish-load", () => { setTimeout(() => window.show(), 200) })
+    if (app.isPackaged) window.loadFile("../../build/index.html");
+    else window.loadURL("http://localhost:3000");
+    
+    window.webContents.on("did-finish-load", () => window.show())
     ipcMain.on("minimize", () => { window.minimize() });
     ipcMain.on("minmax", () => { window.isMaximized() ? window.unmaximize() : window.maximize() });
     ipcMain.on("restart", () => { app.relaunch(); app.exit(0); });

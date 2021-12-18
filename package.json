@@ -48,21 +48,21 @@
     ]
   },
   "devDependencies": {
-    "@types/faker": "^5.1.7",
-    "@types/nanoid": "^2.1.0",
-    "@types/react-redux": "^7.1.12",
-    "@types/redux-persist": "^4.3.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "@types/faker": "^5.1.7",
     "@types/jest": "^26.0.15",
+    "@types/nanoid": "^2.1.0",
     "@types/node": "^16.11.7",
     "@types/react": "^17.0.24",
     "@types/react-dom": "^16.9.8",
+    "@types/react-redux": "^7.1.12",
     "@types/react-router-dom": "^5.1.6",
-    "typescript": "^4.4.4",
+    "@types/redux-persist": "^4.3.1",
+    "electron": "^16.0.0",
     "redux-devtools-extension": "^2.13.9",
-    "electron": "^16.0.0"
+    "typescript": "^4.4.4"
   },
   "build": {
     "appId": "com.akyurek.readinghistory",
