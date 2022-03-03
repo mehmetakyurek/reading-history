@@ -5,7 +5,7 @@ import { createSelector } from "@reduxjs/toolkit"
 
 import classes from "./scss/Lists.module.scss"
 import { RootState } from "../../store"
-
+import cn from "classnames"
 type BookName = {
     book: string, author: string
 }
@@ -23,29 +23,39 @@ const ListBoxSelector = (state: RootState) => {
         }
     }
 
-    return data as ListsBoxData;
+    return data as { toRead: SectionData, reading: SectionData, read: SectionData };
 }
 
-type ListsBoxData = {
-    toRead: {
-        books: Array<BookName>,
-        rest?: number
-    },
-    reading: {
-        books: Array<BookName & { remaining: string }>,
-        rest?: number
-    },
-    read: {
-        books: Array<BookName & { remaining: string }>,
-        rest?: number
-    }
+type SectionData = {
+    books: Array<BookName & { remaining?: string }>,
+    rest?: number
+}
+
+function Section(props: { books: SectionData, className?: string }) {
+    return <div className={cn(classes["section"], props.className)}>
+        <div className={classes["left"]}><div className={classes["line"]} /></div>
+        <div className={classes["books"]}>
+            {props.books.books.map(e => <div className="book">{e.book + (e.author ? " - " + e.author : "")}</div>)}
+            <div className={classes["rest"]}>{props.books.rest ? "+" + props.books.rest : ""}</div>
+        </div>
+    </div>
 }
 
 export default function ListsBox() {
     const data = useSelector(ListBoxSelector);
     return <>
         <div className={classes["overview-lists"]}>
-            <div className={classes["section"] + " " + classes["section-to-read"]}>
+            <div className={classes["section-container"]}>
+                <Section books={data.toRead} className={classes["section-toRead"]} />
+                <Section books={data.reading} className={classes["section-reading"]} />
+                <Section books={data.read} className={classes["section-read"]} />
+            </div>
+        </div>
+        <div className={classes["overview-title"]}>Plan</div>
+    </>
+}
+
+/* <div className={classes["section"] + " " + classes["section-to-read"]}>
                 <div className={classes["section-icon"]} />
                 <div className={classes["section-line"]} />
                 <div className={classes["section-text-container"]}>
@@ -94,8 +104,4 @@ export default function ListsBox() {
                         +{data.read.rest}...
                     </div>
                 </div>
-            </div>
-        </div>
-        <div className={classes["overview-title"]}>Plan</div>
-    </>
-}
+            </div> */
