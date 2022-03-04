@@ -3,9 +3,11 @@
     height: 100%;
     & .progress-ring-bg {
         stroke: #463731;
+        filter: drop-shadow(0px 0px 3px #463731);
     }
     & .progress-ring-stroke {
         stroke: #BC643C;
+        filter: drop-shadow(0px 0px 3px #BC643C);
     }
     & .progress-ring-text {
         fill: #D0D0D0;

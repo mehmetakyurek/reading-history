@@ -18,14 +18,14 @@ export default function ProgressRing(props: ProgressRingType) {
     const strokeDashoffset = (circumference - ((progress > 0 && progress < 100) ? progress : progress < 0 ? 0 : progress > 100 ? 100 : 0)  / 100 * circumference);
 
     return (
-        <svg viewBox="0 0 130 130" className={classes["progress-ring"]}
+        <svg viewBox="0 0 150 150" className={classes["progress-ring"]}
         >
             <circle className={classes["progress-ring-bg"]}
                 fill="transparent"
                 style={{ strokeDashoffset }}
                 r={55}
-                cx={65}
-                cy={65}
+                cx={"50%"}
+                cy={"50%"}
                 strokeWidth={20}
             />
             <text className={classes["progress-ring-text"]} x="50%" y="50%" dominantBaseline="middle" textAnchor="middle">{completed}/{target}</text>
@@ -33,10 +33,10 @@ export default function ProgressRing(props: ProgressRingType) {
                 fill="transparent"
                 strokeDasharray={circumference + ' ' + circumference}
                 style={{ strokeDashoffset }}
-                transform="rotate(-90, 65, 65)"
+                transform="rotate(-90, 75, 75)"
                 r={55}
-                cx={65}
-                cy={65}
+                cx={"50%"}
+                cy={"50%"}
                 strokeWidth={20}
             />
 
