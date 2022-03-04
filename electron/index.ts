@@ -1,4 +1,4 @@
-import { BrowserWindow, app, ipcMain } from "electron"
+import { BrowserWindow, app, ipcMain, globalShortcut } from "electron"
 import { Store } from "./store";
 
 let window: BrowserWindow;
@@ -7,6 +7,7 @@ let store: Store;
 Promise.all([app.whenReady(), Store.init()]).then((val) => {
     store = val[1];
     createWindow();
+    globalShortcut.register('CommandOrControl+R', () => {})
 })
 
 function createWindow() {
@@ -23,7 +24,7 @@ function createWindow() {
     window.setMenuBarVisibility(false);
     if (app.isPackaged) window.loadFile("../../build/index.html");
     else window.loadURL("http://localhost:3000");
-    
+
     window.webContents.on("did-finish-load", () => window.show())
     ipcMain.on("minimize", () => { window.minimize() });
     ipcMain.on("minmax", () => { window.isMaximized() ? window.unmaximize() : window.maximize() });
