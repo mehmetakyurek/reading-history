@@ -41,7 +41,6 @@ export class Store {
             } else {
                 const file = (await this.file.read({ buffer: Buffer.alloc(size - 1), position: 1 })).buffer;
                 const data = Buffer.from(file.toString(), "base64").toString();
-                console.log(data);
                 resolve(data)
             }
         })
@@ -112,5 +111,3 @@ export class Store {
         })
     }
 }
-
-console.log(process.versions.electron, version);
