@@ -73,34 +73,33 @@
                 }
                 &:hover .hover-box{display: block;}
                 color: #ddd;
-                .hover-box {
-                    pointer-events: none;
-                    width: 46px;
-                    height: 46px;
-                    display: none;
-                    position: absolute;
-                    bottom: calc(100% + 15px);
-                    left: 50%;
-                    transform: translateX(-50%);
-                    padding: 2px 5px;
-                    border-radius: 3px;
-                    background-color: #572813;
-                    text-align: center;
-                    z-index: 9999;
-                    &::after {
-                        position: absolute;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        content: "";
-                        width: 0; 
-                        height: 0; 
-                        border-left: 15px solid transparent;
-                        border-right: 15px solid transparent;
-                        border-top: 15px solid #572813;
-                    }
-                }
             }
         }
+    }
+}
+:global(.hover-box) {
+    pointer-events: none;
+    width: 46px;
+    height: 46px;
+    position: absolute;
+    transform: translateX(calc(-50% + 7.5px)) translateY(calc(-100% - 13px));
+    opacity: 0;
+    transition: opacity 100ms 50ms;
+    padding: 2px 5px;
+    border-radius: 3px;
+    background-color: #572813;
+    text-align: center;
+    z-index: 9999;
+    &::after {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        content: "";
+        width: 0; 
+        height: 0; 
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-top: 15px solid #572813;
     }
 }
 

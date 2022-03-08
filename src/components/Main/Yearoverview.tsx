@@ -1,18 +1,18 @@
-import React, { FC, ReactElement, useRef } from "react"
+import React, { createRef, FC, ReactElement, ReactType, useRef, useState } from "react"
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { RDate } from "../../class";
 import { RootState } from "../../store";
 import classes from "./scss/YearOverview.module.scss"
-
+import { createPortal } from "react-dom";
 // 364 tane kutu oluşturuyor, yılın son günü 365' inciyi oluştaracak şekilde düzenlenecek.
 
 export default function YearOverview() {
-    const data = {
-        date: new Date(),
-        target: 50
-    }
-    //const YearData = getYearData();
+    const HoverBoxRef = createRef<HTMLDivElement>()
+    const [hoverRead, setHoverRead] = useState(-1);
+    const [hoverDate, setHoverDate] = useState("");
+    let date = new Date();
+    const target = useSelector<RootState, number>(state => state.main.target);
     const YearData = useSelector<RootState, YearData>(state => {
         const dateNow = new Date();
 
@@ -39,32 +39,58 @@ export default function YearOverview() {
     })
 
     return <div className={classes["year-overview"]}>
-        <div className={classes["year-overview-year"]}>{data.date.getFullYear()}</div>
+        {createPortal(<div ref={HoverBoxRef} className="hover-box">
+            <div className={classes["hover-box-date"]}>{hoverDate}</div>
+            <div className={classes["hover-box-read"]}>{hoverRead}s.</div>
+        </div>, (document.getElementById("root")!))}
+        <div className={classes["year-overview-year"]}>{date.getFullYear()}</div>
         <div className={classes["year-overview-data-container"]}>
             <div className={classes["year-overview-data-week"]}>W1</div>
             <div className={classes["year-overview-data-week"]}>W52</div>
             <div className={classes["year-overview-data-info"]}>
-                Less<div className={classes["year-overview-data-info-boxes"]}><div></div><div></div><div></div><div></div><div></div></div>More
+                Less<div className={classes["year-overview-data-info-boxes"]}><div /><div /><div /><div /><div /></div>More
             </div>
             <div className={classes["year-overview-data"]}>
-                {YearData.map(daydata => <YearDataDayBox key={daydata.date.toLocaleDateString()} read={daydata.read} date={daydata.date} target={data.target} future={daydata.future} />)}
+                {YearData.map(daydata =>
+                    <YearDataDayBox
+                        onMouseEnter={(e, read, date) => {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            setHoverRead((read ?? 0));
+                            setHoverDate(date);
+                            if (HoverBoxRef.current) {
+                                HoverBoxRef.current.style.top = rect.top + "px";
+                                HoverBoxRef.current.style.left = rect.left + "px";
+                                HoverBoxRef.current.style.opacity = "1";
+                            }
+                        }}
+                        onMouseLeave={() => {
+                            if (HoverBoxRef.current) HoverBoxRef.current.style.opacity = "0";
+                        }}
+                        {...daydata}
+                        key={daydata.date.toLocaleDateString()}
+                        target={target}
+                    />)}
             </div>
         </div>
     </div>
 }
 
-type YearDataDayBoxState = { date: Date, read?: number, future?: boolean, target: number };
-const YearDataDayBox: FC<YearDataDayBoxState> = (props): ReactElement => {
+const YearDataDayBox: FC<{
+    date: Date,
+    read?: number,
+    future?: boolean,
+    target: number,
+    onMouseEnter?: (e: React.MouseEvent, read: number, date: string) => void,
+    onMouseLeave?: React.MouseEventHandler<HTMLDivElement>
+}> = (props): ReactElement => {
     const history = useHistory();
     return <div
+        onMouseEnter={e => props.onMouseEnter?.(e, props.read ?? 0, props.date.getDate() + "." + (props.date.getMonth() + 1))}
+        onMouseLeave={props.onMouseLeave}
         onClick={(e) => history.push({ pathname: "/diary", state: { date: new RDate(new Date(Number(e.currentTarget.getAttribute("data-date")))) } })}
         data-date={props.date.getTime()}
         style={{ backgroundColor: "var(--color-level-" + Math.min(Math.round(((props.read ?? 1) / props.target) * 5), 5) + ")" }}
         className={classes["year-overview-data-day"] + ((props?.future) ? (" " + classes["blank"]) : "")}>
-        <div className={classes["hover-box"]}>
-            <div className={classes["hover-box-date"]}>{props.date.getDate() + "." + (props.date.getMonth() + 1)}</div>
-            <div className={classes["hover-box-read"]}>{props.read}s.</div>
-        </div>
     </div>
 }
 
