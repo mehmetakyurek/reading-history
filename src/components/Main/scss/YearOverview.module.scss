@@ -17,17 +17,17 @@
     grid-template-rows: auto 1fr;
     background-color: #1A1D24;
     & .year-overview-year {
-        font-size: 17px;
+        font-size: 1.0625em;
         color: #D0D0D0;
         text-align: center;
     }
     & .year-overview-data-container {
         position: relative;
+        font-size: .75em;
         
         & .year-overview-data-week {
             position: absolute;
             top: calc(-1.3333em - 14px);
-            font-size: 12px;
             color: #545454;
             &:nth-child(2) {
                 right: 0;
@@ -35,7 +35,6 @@
         }
         & .year-overview-data-info {
             column-gap: 5px;
-            font-size: 12px;
             color: #545454;
             display: flex;
             position: absolute;

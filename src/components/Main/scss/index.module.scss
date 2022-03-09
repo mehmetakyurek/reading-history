@@ -25,7 +25,7 @@
     position: relative;
     width: 21.197vw;
     padding-top: 110.5%;
-    min-width: 330px;
+    min-width: 300px;
 
     background-color: #1D1E23;
     box-shadow: #141414 0px 0px 6px;
@@ -116,6 +116,9 @@
     }
 }
 @media screen and (max-width: 1400px){
+    .container {
+        font-size: 14px;
+    }
     .first-part {
         grid-template-columns: repeat(2, auto);
         grid-template-rows: repeat(2, auto);
@@ -130,5 +133,6 @@
 @media screen and (max-width: 1130px) {
     .container {
         overflow: auto;
+        justify-content: space-between;
     }
 }
