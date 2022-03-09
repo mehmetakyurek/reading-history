@@ -17,7 +17,7 @@ export type FilterData = {
 }
 export function FilterAlgorithm(data: FilterData, searchText?: string, tags?: string[]) {
     const s = searchText?.toLowerCase() || "";
-    return (
+    return ((
         (s === "" && !tags) ||
         data.text.toLowerCase().includes(s) ||
         data.book?.author?.toLowerCase().includes(s) ||
@@ -27,17 +27,17 @@ export function FilterAlgorithm(data: FilterData, searchText?: string, tags?: st
         (
             (tags === undefined || tags?.length === 0) ||
             (tags?.filter(e => data.tags?.includes(e)).length || 0) > 0
-        ) || false
+        )) || false
 }
 
 
 
 export function getFirstDay(year: number, month: number) {
     var date = new Date(new Date().setFullYear(year, month, 1)).getDay();
-    if (date == 0) return 7; else return date;
+    if (date === 0) return 7; else return date;
 }
 export function getPrevLastDate(year: number, month: number) {
-    if (month == 0) { month = 12; year--; }
+    if (month === 0) { month = 12; year--; }
     return new Date(year, month, 0).getDate();
 }
 

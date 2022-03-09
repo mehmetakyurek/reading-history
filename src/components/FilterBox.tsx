@@ -1,8 +1,5 @@
 import React, { FC, ReactElement, useState } from "react"
-import { useSelector } from "react-redux"
-
 import { ReactComponent as StarIcon } from "./styles/img/star.svg"
-
 import classes from "./styles/FilterBox.module.scss"
 
 type FilterBoxPropsT = {
@@ -46,7 +43,7 @@ const FilterBoxStars: FC<{ rating?: number, changed?: FilterBoxPropsT["ratingCha
         const index = Number(e.currentTarget.getAttribute("data-index"));
         if (index === rating) setRating(0);
         else if (index <= 5 && index >= 0) setRating(index);
-        props.changed?.(index == rating ? 0 : index);
+        props.changed?.(index === rating ? 0 : index);
     }
     for (let i = 1; i <= 5; i++) {
         stars.push(

@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import {
   MemoryRouter as Router,
   Switch,
@@ -15,7 +14,6 @@ import './App.css';
 
 //"typescript.preferences.importModuleSpecifier": "relative",
 
-import Login from "./components/Login"
 import Main from "./components/Main"
 import Diary from "./components/Diary"
 import Quotes from "./components/Quotes"

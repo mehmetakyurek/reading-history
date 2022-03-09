@@ -1,15 +1,14 @@
 import classes from "./styles/Diary.module.scss"
 import { FC, ReactElement, useEffect, useRef, useState } from "react"
 import Datepicker from "./Datepicker"
-import store, { RootState } from "../store";
+import { RootState } from "../store";
 import { useDispatch, useSelector } from "react-redux";
 import { BookState } from "../store/reducers/main";
 import { RDate, RDateType } from "../class";
-import { useHistory, useLocation } from "react-router";
+import { useHistory } from "react-router";
 import { createSelector } from "reselect";
 import { addLog, updateLog, removeLog, updateDiaryText } from "../store/reducers/diary";
 import { ReactComponent as RemoveButton } from "./styles/img/remove.svg";
-import TitleBar from "./TitleBar";
 
 const DiaryPage: FC = (props): ReactElement => {
     const history = useHistory<{ date: RDateType }>();
@@ -102,7 +101,6 @@ export const getBookId = (books: Array<BookState>, text?: string) => {
 export default DiaryPage;
 
 const ReadingLogItem: FC<{ book?: BookState, id: string, read: number, customName?: string, onUpdate?: (data: { text: string, read: number }) => void, onDelete?: (id: string) => void }> = (props): ReactElement => {
-    const dispatch = useDispatch();
     const [name, setName] = useState(props.book ? (props.book.name + " - " + props.book.author) : props.customName ?? "");
     const [read, setRead] = useState(props.read);
     return <div className={classes["reading-log-item"]}>
@@ -143,16 +141,6 @@ const MonthOverview: FC<{ date: RDateType, onClick?: (date: RDateType) => void }
         }
         return data;
     })(state))
-
-    //const days = useSelector((state: RootState) => state.diary.filter(e => e.date.year === props.date.year && e.date.month === props.date.month));
-    const lastDate = new Date(props.date.year, props.date.month + 1, 0).getDate();
-
-
-
-    /*for (let i = 1; i <= lastDate; i++) {
-        const day = days.find(e => e.date.date === i);
-        dayData.push({ date: i, read: day?.readBooks[0]?.read, book: day?.readBooks[0]?.book, rest: (day?.readBooks?.length || 1) - 1 || undefined })
-    }*/
     const SHOW_EMPTY_DAYS = false;
     return <div className={classes["month-overview"]}>
         {
@@ -170,8 +158,4 @@ const MonthOverviewItem: FC<MonthOverviewItemT> = (props): ReactElement => {
         <div className={classes["month-overview-day-read"]}>{props.read || "0"}p.</div>
         <div className={classes["month-overview-day-rest"]}>{props.rest ? "+" + props.rest : ""}</div>
     </div>
-}
-
-function randomInt(min: number, max: number) { // min and max included 
-    return Math.floor(Math.random() * (max - min + 1) + min);
 }

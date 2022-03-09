@@ -1,7 +1,4 @@
-import React, { } from "react"
 import { useSelector } from "react-redux"
-import { Route, useHistory } from "react-router-dom"
-import { createSelector } from "@reduxjs/toolkit"
 
 import classes from "./scss/Lists.module.scss"
 import { RootState } from "../../store"

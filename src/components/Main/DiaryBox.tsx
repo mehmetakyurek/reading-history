@@ -1,14 +1,10 @@
-import React, { useRef } from "react"
-import { useHistory } from "react-router-dom";
 import classes from "./scss/Diary.module.scss"
 
 import { getWeekDays } from "../../index"
 import { RootState } from "../../store";
 import { useSelector } from "react-redux";
-import { RDate } from "../../class";
-import { DiaryField } from "../../store/reducers/diary";
 
-type DiaryBox = {
+type TDiaryBox = {
     week: number,
     days: Array<{
         book: string,
@@ -27,7 +23,7 @@ function DiarySelector(state: RootState) {
         days: [
 
         ]
-    } as DiaryBox;
+    } as TDiaryBox;
     for (let i = 1; i <= 7; i++) {
         const index = state.diary.findIndex(e => e.date.year === date.getFullYear() && e.date.month === date.getMonth() && e.date.date === date.getDate());
 
@@ -51,7 +47,7 @@ export default function DiaryBox() {
 
     const weekDays = getWeekDays("short");
     let dayIndex = new Date().getDay() - 1;
-    if (dayIndex == -1) dayIndex = 6;
+    if (dayIndex === -1) dayIndex = 6;
 
     return <>
         <div className={classes["overview-diary"]}>
@@ -59,7 +55,7 @@ export default function DiaryBox() {
             <div className={classes["diary-rows"]}>
                 {
                     weekDays.map((day, index) => <div key={index} className={classes["diary-row"]}>
-                        <div className={classes["diary-day-name"] + (dayIndex == index ? " " + classes["day-today"] : "")}>{day}</div>
+                        <div className={classes["diary-day-name"] + (dayIndex === index ? " " + classes["day-today"] : "")}>{day}</div>
                         <div className={classes["diary-book-section"]}>
                             <div className={classes["diary-book-name"]}>{data.days[index].author ? data.days[index].book + (data.days[index].author ? " - " + data.days[index].author : "") : ""}</div>
                             <div className={classes["diary-book-rest"]}>{data.days[index].author ? "+" + data.days[index].rest : ""}</div>
@@ -73,8 +69,8 @@ export default function DiaryBox() {
     </>
 }
 
-function getweek(date: Date) {
-    var date = new Date(date.getTime());
+function getweek(d: Date) {
+    var date = new Date(d.getTime());
     date.setHours(0, 0, 0, 0);
     // Thursday in current week decides the year.
     date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);

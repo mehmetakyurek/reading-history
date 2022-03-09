@@ -1,4 +1,4 @@
-import React, { createRef, FC, ReactElement, ReactType, useRef, useState } from "react"
+import React, { createRef, FC, ReactElement, useState } from "react"
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { RDate } from "../../class";
@@ -26,7 +26,7 @@ export default function YearOverview() {
             const log = state.diary.find(e => e.date.year === year && e.date.month === dateCounter.getMonth() && e.date.date === dateCounter.getDate());
             let read = 0;
             for (const i of log?.readBooks ?? []) read += i.read ?? 0;
-            if (!future) (future = dateCounter.getMonth() < month || (dateCounter.getMonth() == month && dateCounter.getDate() <= date))
+            if (!future) (future = dateCounter.getMonth() < month || (dateCounter.getMonth() === month && dateCounter.getDate() <= date))
             dataArray.push({
                 date: new Date(dateCounter),
                 future,
@@ -92,10 +92,6 @@ const YearDataDayBox: FC<{
         style={{ backgroundColor: "var(--color-level-" + Math.min(Math.round(((props.read ?? 1) / props.target) * 5), 5) + ")" }}
         className={classes["year-overview-data-day"] + ((props?.future) ? (" " + classes["blank"]) : "")}>
     </div>
-}
-
-function randomInteger(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 type YearData = Array<{

@@ -1,9 +1,3 @@
-import { render } from "@testing-library/react"
-import { read } from "fs"
-import React, { Profiler, useRef } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { isThisTypeNode } from "typescript"
-
 import classes from "./scss/index.module.scss"
 
 import ListsBox from "./ListsBox"

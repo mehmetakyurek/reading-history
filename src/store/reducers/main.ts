@@ -1,9 +1,8 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
-import store, { RootState } from "../index"
+import { RootState } from "../index"
 import { nanoid } from "nanoid"
-import faker from "faker/locale/en";
-import { RDate, RDateType } from "../../class";
+import { RDateType } from "../../class";
 
 export type BookList = "toRead" | "reading" | "read";
 
@@ -53,7 +52,7 @@ const mainSlice = createSlice({
     }
 });
 export const completedSelector = (state: RootState) => {
-    return state.main.books.filter(e => e.list == "read")
+    return state.main.books.filter(e => e.list === "read")
 };
 
 export const { setTarget, setCompleted, addBook, empty, updateBook, deleteBook } = mainSlice.actions;

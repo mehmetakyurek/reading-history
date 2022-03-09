@@ -6,7 +6,6 @@ import { ReactComponent as ListsIcon } from "./styles/img/lists.svg"
 import { ReactComponent as DiaryIcon } from "./styles/img/diary.svg"
 import { ReactComponent as QuotesIcon } from "./styles/img/quotes.svg"
 import { ReactComponent as SummariesIcon } from "./styles/img/summaries.svg"
-import { ReactComponent as BackIcon } from "./styles/img/back.svg"
 
 export default function NavigationBar() {
     const history = useHistory();

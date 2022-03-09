@@ -23,7 +23,7 @@ const BookInput: FC<props> = (props) => {
 
     const list = useSelector((state: RootState) => {
         const [book, author] = inputVal.replace(" - ", "/*").split("/*").map(e => e.toLocaleLowerCase());
-        if (book.length > 1) return state.main.books.filter(e => e.name.toLowerCase().includes(book) && (author == undefined || e.author?.toLowerCase().includes(author)))
+        if (book.length > 1) return state.main.books.filter(e => e.name.toLowerCase().includes(book) && (author === undefined || e.author?.toLowerCase().includes(author)))
         else return [];
     });
 
@@ -61,20 +61,20 @@ const BookInput: FC<props> = (props) => {
             }}
 
             onKeyDown={e => {
-                if (e.key == "ArrowDown")
-                    if (selected == list.length - 1) setSelected(0)
+                if (e.key === "ArrowDown")
+                    if (selected === list.length - 1) setSelected(0)
                     else setSelected(selected + 1);
-                else if (e.key == "ArrowUp")
-                    if (selected == 0) setSelected(list.length - 1);
+                else if (e.key === "ArrowUp")
+                    if (selected === 0) setSelected(list.length - 1);
                     else setSelected(selected - 1);
-                else if (e.key == "Enter") {
+                else if (e.key === "Enter") {
                     if (list[selected]) BookSelected()
                 }
-                else if (e.key == "Escape") {
+                else if (e.key === "Escape") {
                     if (results) setResults(false);
                     else inputEl.current?.blur();
                 }
-                else if (e.ctrlKey == true && e.key == " ") {
+                else if (e.ctrlKey === true && e.key === " ") {
                     setResults(!results);
                 }
             }}
@@ -91,7 +91,7 @@ const BookInput: FC<props> = (props) => {
                 <ResultRow
                     key={e.id}
                     book={e}
-                    selected={selected == index}
+                    selected={selected === index}
                     hover={() => setSelected(index)}
                     click={() => {
                         BookSelected();
@@ -103,7 +103,7 @@ const BookInput: FC<props> = (props) => {
 
 const ResultRow: FC<{ book: BookState, selected: boolean, hover?: () => void, click?: () => void }> = props => {
     const book = props.book;
-    return <div className={classes["result-box-row"] + (props.selected ? " " + classes["selected"] : "")} onMouseMove={e => props.hover?.()} onMouseDown={(e) => { if (e.button == 0) props.click?.() }}>
+    return <div className={classes["result-box-row"] + (props.selected ? " " + classes["selected"] : "")} onMouseMove={e => props.hover?.()} onMouseDown={(e) => { if (e.button === 0) props.click?.() }}>
         <div className={classes["row-name"]}>{book.name}</div>
         <div className={classes["row-author"]}>{book.author}</div>
         <div className={classes["row-icon"] + (props.book.list ? (" " + classes[("row-icon-" + props.book.list)]) : "")}></div>

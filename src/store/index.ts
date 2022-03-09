@@ -1,16 +1,10 @@
 import { combineReducers, createStore } from "@reduxjs/toolkit"
-
 import MainReducer, { } from "./reducers/main"
 import DiarySlice from "./reducers/diary"
 import SummariesSlice from "./reducers/summaries"
 import QuotesSlice from "./reducers/quotes"
-
 import { persistStore, persistReducer } from 'redux-persist'
-
-
-
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { generate } from "./DataGenerator"
 import { PersistorOptions } from "redux-persist/es/types"
 
 const RootReducer = combineReducers({

@@ -1,8 +1,6 @@
-import React, { useRef } from "react"
 import classes from "./scss/TextBoxes.module.scss"
 
 import { ITextOverview, TextOverview } from "./QuotesBox"
-import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { RDate } from "../../class";

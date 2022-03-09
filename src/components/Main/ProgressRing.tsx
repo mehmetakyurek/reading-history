@@ -1,7 +1,6 @@
-import React, { useRef } from "react"
 import { useSelector } from "react-redux"
-import store, { RootState } from "../../store"
-import { setTarget, setCompleted, completedSelector } from "../../store/reducers/main"
+import { RootState } from "../../store"
+import { completedSelector } from "../../store/reducers/main"
 import classes from "./scss/Progressring.module.scss"
 
 type ProgressRingType = {

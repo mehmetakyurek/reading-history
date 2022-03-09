@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import *  as Class from "./class"
 import './index.css';
 import App from './App';
 import Login from "./components/Login"
@@ -26,7 +25,7 @@ export function getWeekDays(weekDay: "short" | "long", locale: string = "default
 export function getMonths(month: "short" | "long", locale: string = "default"): Array<string> {
   const date = new Date(2021, 0, 1);
   const months: Array<string> = [];
-  while (date.getFullYear() == 2021) {
+  while (date.getFullYear() === 2021) {
     months.push(date.toLocaleString(locale, {
       month: month
     }));

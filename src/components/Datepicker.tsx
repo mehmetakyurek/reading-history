@@ -2,8 +2,7 @@ import classes from "./styles/Datepicker.module.scss";
 import { FC, ReactElement, useEffect, useState } from "react"
 
 import { getMonths, getWeekDays } from "../index"
-import { RDate, RDateType } from "../class";
-import { date } from "faker";
+import { RDateType } from "../class";
 import { getFirstDay, getPrevLastDate } from "./util";
 
 const days = getWeekDays("short"); //Global var
@@ -47,10 +46,10 @@ const Datepicker: FC<DatepickerProps> = (props): ReactElement => {
         return <div className={classes["datepicker"]}>
             <div className={classes["datepicker-content-container"]}>
                 <div className={classes["datepicker-title"]}>
-                    <div className={classes["datepicker-title-year"]} onClick={e => { setContent(content == "year" ? "date" : "year") }}>{state.year}</div>
+                    <div className={classes["datepicker-title-year"]} onClick={e => { setContent(content === "year" ? "date" : "year") }}>{state.year}</div>
                     <div className={classes["datepicker-title-right"]}>
                         <div className={classes["datepicker-title-date"]}>{state.date}</div>
-                        <div className={classes["datepicker-title-month"]} onClick={e => { setContent(content == "month" ? "date" : "month") }}>{months[state.month]}</div>
+                        <div className={classes["datepicker-title-month"]} onClick={e => { setContent(content === "month" ? "date" : "month") }}>{months[state.month]}</div>
                     </div>
                 </div>
                 <div className={classes["datepicker-content"]}>
@@ -94,7 +93,7 @@ const MonthSelector: FC<{ state: DatepickerState, setMonth: (month: number) => v
 const YearSelector: FC<{ state: DatepickerState, setYear: (year: number) => void }> = (props): ReactElement => {
     const elements: Array<ReactElement> = [];
     for (let i = props.state.year - 4; i <= props.state.year + 4; i++) elements.push(
-        <div key={i} className={classes["datepicker-year"] + (DateNow.getFullYear() == i ? (" " + classes["year-now"]) : "")} data-index={i} onClick={e => props.setYear(Number(e.currentTarget.dataset.index))}>
+        <div key={i} className={classes["datepicker-year"] + (DateNow.getFullYear() === i ? (" " + classes["year-now"]) : "")} data-index={i} onClick={e => props.setYear(Number(e.currentTarget.dataset.index))}>
             {i}
         </div>);
     return <div className={classes["datepicker-year-selector"]}>

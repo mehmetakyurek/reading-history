@@ -11,7 +11,6 @@ import { ReactComponent as PlusIcon } from "./styles/img/plus.svg"
 import { createPortal } from "react-dom";
 import { RDate, RDateType } from "../class";
 import { addBook, BookState, deleteBook, updateBook } from "../store/reducers/main";
-import TitleBar from "./TitleBar";
 
 const months = getMonths("long");
 const days = getWeekDays("long");
@@ -124,7 +123,6 @@ const DayRow: FC<{ book?: BookState, date: RDateType }> = props => {
         }
     }, [name, page])
     const update = useCallback(() => {
-        console.log(props.book?.id);
         dispatch(updateBook({
             id: props.book?.id,
             name: name,
@@ -146,7 +144,3 @@ const DayRow: FC<{ book?: BookState, date: RDateType }> = props => {
 }
 
 export default Monthly;
-
-function prevMonth(n: number): number {
-    return n === 0 ? 11 : n - 1;
-}

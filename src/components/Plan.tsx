@@ -5,14 +5,12 @@ import { RootState } from "../store";
 import classes from "./styles/Plan.module.scss";
 
 import Monthly from "./PlanMonthly"
-import TitleBar from "./TitleBar"
-import { MemoryRouter, Link, Route, Switch, useRouteMatch } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import cn from "classnames"
 
 const months = getMonths("long");
 
 const Plan: FC = () => {
-    let match = useRouteMatch();
     return <>
         <Route path={`/plan/:y/:m`} component={Monthly} />
         <Route exact path={`/plan`} component={Months} />
@@ -48,8 +46,8 @@ const Months: FC<{ year?: number, onSelected?: (year: number, month: number) => 
 
 const MonthItem: FC<{ year: number, month: number, hideCurrentMonth?: boolean, onClick?: (year: number, month: number) => void }> = (props) => {
     const now = new Date();
-    const [date, setDate] = useState(now.getDate());
-    const [current, setCurrent] = useState((!props.hideCurrentMonth) && now.getFullYear() == props.year && now.getMonth() === props.month);
+    const date = now.getDate();
+    const current = (!props.hideCurrentMonth) && now.getFullYear() === props.year && now.getMonth() === props.month;
 
     const books = useSelector((state: RootState) => state.main.books.filter(e => e.date?.year === props.year && e.date?.month === props.month).sort((a, b) => { return (a.date?.date ?? 0) - (b.date?.date ?? 0) }));
     const todayIndex = current ? books.findIndex((e, index) => ((index === 0 && (e.date?.date ?? 0) >= date && date < (books[index + 1]?.date?.date ?? 0)) || ((e.date?.date ?? 0) >= date && index > 0 && (books[index - 1].date?.date ?? 0) < date))) || -1 : -1;
@@ -73,7 +71,7 @@ const MonthItem: FC<{ year: number, month: number, hideCurrentMonth?: boolean, o
 
                     {books.slice(startIndex, startIndex + 4).map((e, index) => <LogRow
                         date={e.date?.date ?? 0}
-                        book={e.name + (e.author?.length || 0 > 0 ? " - " + e.author : "")}
+                        book={e.name + ((e.author?.length || 0) > 0 ? " - " + e.author : "")}
                         read={e.list === "read"}
                         currentMonth={current}
                         current={current && (startIndex + index) === (todayIndex)}

@@ -1,7 +1,6 @@
-import { FC, MouseEventHandler, Props, ReactElement, useEffect, useRef, useState, useCallback } from "react"
-import { RDate, RDateType } from "../class";
-import store, { RootState } from "../store"
-import { BookList, BookState } from "../store/reducers/main"
+import { FC, MouseEventHandler, ReactElement, useEffect, useState } from "react"
+import { RDate } from "../class";
+import { RootState } from "../store"
 
 import classes from "./styles/Quotes.module.scss"
 
@@ -16,9 +15,7 @@ import { ReactComponent as AddButton } from "./styles/img/plus.svg";
 
 import { updateQuote } from "../store/reducers/quotes"
 import { getBookId } from "./Diary"
-import BookInput from "./BookInput";
 import { createDateString, FilterAlgorithm } from "./util";
-import TitleBar from "./TitleBar";
 
 
 const QuotesPage: FC = (props): ReactElement => {
@@ -79,14 +76,6 @@ const QuoteItem: FC<Quote & { onClick?: MouseEventHandler<HTMLDivElement> }> = (
 
 export default QuotesPage;
 
-function randomInteger(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-type QuoteData = {
-    id: string, book: string, author: string, page: number, quote: string
-}
-
 const AddQuoteOverlay: FC<{ id?: string, OC: number }> = (props): ReactElement => {
     const [enabled, setEnabled] = useState(props.id !== undefined);
     const [bookInput, setBookInput] = useState<string>("");
@@ -111,10 +100,6 @@ const AddQuoteOverlay: FC<{ id?: string, OC: number }> = (props): ReactElement =
         }
     }, [props.OC])
 
-    const update = useCallback(() => {
-        const bookid = getBookId(books, bookInput);
-        dispatch(updateQuote({ id: props.id ?? "", text: text ?? "", book: bookid, customName: bookid ? undefined : bookInput, page: page }))
-    }, [])
     return <div id="add-quote-overlay-bg" className={classes["add-quote-overlay"]} style={{ display: enabled ? "" : "none" }} onKeyUp={e => console.log(e.key)}
         onClick={(e) => {
             if ((e.target as HTMLElement).id === "add-quote-overlay-bg") setEnabled(false);

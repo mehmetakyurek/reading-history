@@ -1,6 +1,4 @@
-import { createSelector, createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit"
-import { date } from "faker"
-import store, { RootState } from ".."
+import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit"
 import { RDate, RDateType } from "../../class"
 import { BookState } from "./main"
 

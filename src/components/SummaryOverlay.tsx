@@ -15,7 +15,6 @@ const SummaryOverlay: FC<{ id?: string, counter?: number }> = (props): ReactElem
     const summary = useSelector((state: RootState) => state.summaries.find(e => e.id === props.id));
 
     const book = useSelector((state: RootState) => state.main.books.find(e => e.id === summary?.book));
-    const [page, setPage] = useState(summary?.page ?? 0);
     const [text, setText] = useState(summary?.text ?? "");
     const [customText, setCustomText] = useState(book?.name || summary?.source || "");
 
@@ -26,9 +25,8 @@ const SummaryOverlay: FC<{ id?: string, counter?: number }> = (props): ReactElem
 
     useEffect(() => {
         setText(summary?.text ?? "");
-        setPage(summary?.page ?? 0);
         setCustomText(book?.name || summary?.source || "");
-    }, [props.id, summary?.text, summary?.book, summary?.page, summary?.source])
+    }, [props.id, summary?.text, summary?.book, summary?.source, book?.name])
 
     useEffect(() => {
         setEnabled((props.counter ?? -1) > 0);
@@ -58,7 +56,7 @@ const SummaryOverlay: FC<{ id?: string, counter?: number }> = (props): ReactElem
                     }}
                     onChange={e => setCustomText(e.target.value)}
                     onKeyPress={e => {
-                        if (e.key == "Enter") e.currentTarget.blur();
+                        if (e.key === "Enter") e.currentTarget.blur();
                     }}
                 />
             </div>
@@ -74,9 +72,7 @@ const SummaryOverlay: FC<{ id?: string, counter?: number }> = (props): ReactElem
                         <CancelIcon onClick={() => setEnabled(false)} />
                     </div>
                 </div>
-                <div className={classes["summary-overlay-page"]}>
-                    {summary?.page ?? ""}
-                </div>
+                <div className={classes["summary-overlay-page"]}></div>
             </div>
         </div>
         <div className={classes["summary-overlay-right"]}>

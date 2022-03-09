@@ -2,7 +2,6 @@ import { createSlice, PayloadAction, nanoid, createSelector } from "@reduxjs/too
 import { RootState } from ".."
 import { RDateType } from "../../class"
 import { BookState } from "./main"
-import * as dataGen from "../DataGenerator"
 import { getTags } from "./utilities"
 
 type SummaryField = {
@@ -32,12 +31,12 @@ const SummariesSlice = createSlice({
             })
         },
         updateSummary(state, action: PayloadAction<Partial<SummaryField>>) {
-            const id = state.findIndex(e => e.id == action.payload.id)
+            const id = state.findIndex(e => e.id === action.payload.id)
             state[id].tags = getTags(action.payload.text || "");
             state[id].text = action.payload.text || "";
         },
         updateBook(state, action: PayloadAction<Pick<SummaryField, "id" | "book" | "source">>) {
-            const id = state.findIndex(e => e.id == action.payload.id);
+            const id = state.findIndex(e => e.id === action.payload.id);
             if (id > -1) {
                 state[id].book = action.payload.book;
                 state[id].source = action.payload.source;

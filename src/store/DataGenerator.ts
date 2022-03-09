@@ -1,15 +1,11 @@
 import store, { RootState } from "."
-import { BookState, addBook } from "./reducers/main"
-import { addDay, DiaryField, addLog, updateDiaryText, deleteAll } from "./reducers/diary"
+import { addBook } from "./reducers/main"
+import { addLog, updateDiaryText } from "./reducers/diary"
 
 import faker from "faker/locale/en"
 import { randomInteger, RDate, RDateType } from "../class"
-import { } from "./reducers/diary"
 import { QuoteField, addQuote } from "./reducers/quotes"
 import { addSummary } from "./reducers/summaries"
-
-type Book = Parameters<typeof addBook>["0"];
-type Diary = Parameters<typeof addDay>["0"];
 
 let st: RootState;
 
