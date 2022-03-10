@@ -112,13 +112,16 @@
         justify-content: space-around;
     }
     .progress-bar {
-        margin: 0 0 42px 0;
+        margin: 0;
     }
 }
-@media screen and (max-width: 1400px){
+@media screen and (max-width: 1540px){
     .container {
         font-size: 14px;
     }
+}
+@media screen and (max-width: 1400px){
+    
     .first-part {
         grid-template-columns: repeat(2, auto);
         grid-template-rows: repeat(2, auto);
@@ -126,7 +129,10 @@
     }
     .yearly-data-container {
         width: 332px;
-        height: 577px;
+        height: fit-content;
+    }
+    .yearly-data-container .year-overview {
+        background-color: #000;
     }
 }
 
