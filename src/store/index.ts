@@ -31,3 +31,6 @@ export default store;
 export let persistor = persistStore(store, ({
   manualPersist: true
 } as unknown) as PersistorOptions)
+
+
+export type { BookState } from "./reducers/main"
