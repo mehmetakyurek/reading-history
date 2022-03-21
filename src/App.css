@@ -1,10 +1,6 @@
-#root,
 .App {
-    width: 100%;
-    min-height: 100vh;
     height: 100%;
 }
-
 ::-webkit-scrollbar {
     width: 3px;
     background-color: #212121;
