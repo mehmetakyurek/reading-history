@@ -10,7 +10,7 @@ type props = {
     onChange?: (value: string) => void  
     changeLayout?: boolean
 }
-
+/*
 const BookInput: FC<props> = (props) => {
     const [inputVal, setInputVal] = useState(props.value ?? "la");
     const [selected, setSelected] = useState(-1);
@@ -131,4 +131,4 @@ const BookName: FC<{ val: string, enabled: boolean, onClick?: React.MouseEventHa
     </div>
 }
 
-export default BookInput;
+export default BookInput;*/

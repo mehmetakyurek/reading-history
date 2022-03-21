@@ -15,7 +15,7 @@ import { ReactComponent as AddButton } from "./styles/img/plus.svg";
 
 import { updateQuote } from "../store/reducers/quotes"
 import { getBookId } from "./Diary"
-import { createDateString, FilterAlgorithm } from "./util";
+import { createDateString, FilterAlgorithm, splitAuthor } from "./util";
 
 
 const QuotesPage: FC = (props): ReactElement => {
@@ -58,6 +58,7 @@ const QuotesPage: FC = (props): ReactElement => {
 
 //Change to Google Keep layout
 const QuoteItem: FC<Quote & { onClick?: MouseEventHandler<HTMLDivElement> }> = (props): ReactElement => {
+    const [book, author] = splitAuthor(props.book?.name);
     const dispatch = useDispatch();
     return <div className={classes["quotes-item"]} onClick={props.onClick}>
         <div className={classes["quote-delete-button"]} onClick={e => {

@@ -7,7 +7,7 @@ import { SummariesSelector, Summary } from "../store/reducers/summaries";
 import SummaryOverlay from "./SummaryOverlay"
 
 import { ReactComponent as AddButton } from "./styles/img/plus.svg";
-import { createDateString, FilterAlgorithm } from "./util";
+import { createDateString, FilterAlgorithm, splitAuthor } from "./util";
 
 const SummariesPage: FC = (props): ReactElement => {
     const data = useSelector((state: RootState) => SummariesSelector(state));
@@ -44,12 +44,13 @@ const SummariesPage: FC = (props): ReactElement => {
 
 const SummariesItem: FC<Summary & { onClick?: MouseEventHandler<HTMLDivElement> }> = (props): ReactElement => {
     const rating = [];
-
+    const [book, author] = splitAuthor(props.book?.name);
+    
     for (var i = 1; i <= (props.rating || 0); i++) rating.push(<div key={i} className={classes["book-rating-star"]} />)
     return <div className={classes["summaries-item"]} onClick={props.onClick}>
-        <div className={classes["book-name"]}>{props.book?.name ? props.book.name : ((props.source === "") ? "Empty" : props.source)}</div>
+        <div className={classes["book-name"]}>{book ? book : ((props.source === "") ? "Empty" : props.source)}</div>
         <div className={classes["book-rating"]}>{rating}</div>
-        <div className={classes["book-author"]}>{props.book?.author ?? ""}</div>
+        <div className={classes["book-author"]}>{author ?? ""}</div>
         <div className={classes["book-date"]}>{createDateString(props.date)}</div>
     </div>
 }

@@ -9,7 +9,6 @@ export type BookList = "toRead" | "reading" | "read";
 export type BookState = {
     id: string
     name: string,
-    author?: string,
     pages?: number,
     list?: BookList,
     date?: RDateType

@@ -8,7 +8,6 @@ type TDiaryBox = {
     week: number,
     days: Array<{
         book: string,
-        author?: string,
         read: number,
         rest: number
     }>
@@ -31,7 +30,6 @@ function DiarySelector(state: RootState) {
         let read = 0;
         for (let i of state.diary[index]?.readBooks ?? []) read += i.read ?? 0;
         logs.days.push({
-            author: state.main.books[bookIndex]?.author,
             book: state.main.books[bookIndex]?.name,
             read,
             rest: Math.max(state.diary[index]?.readBooks.length - 2, 0) ?? 0
@@ -57,8 +55,8 @@ export default function DiaryBox() {
                     weekDays.map((day, index) => <div key={index} className={classes["diary-row"]}>
                         <div className={classes["diary-day-name"] + (dayIndex === index ? " " + classes["day-today"] : "")}>{day}</div>
                         <div className={classes["diary-book-section"]}>
-                            <div className={classes["diary-book-name"]}>{data.days[index].author ? data.days[index].book + (data.days[index].author ? " - " + data.days[index].author : "") : ""}</div>
-                            <div className={classes["diary-book-rest"]}>{data.days[index].author ? "+" + data.days[index].rest : ""}</div>
+                            <div className={classes["diary-book-name"]}>{data.days[index].book}</div>
+                            <div className={classes["diary-book-rest"]}>{"+" + data.days[index].rest ?? ""}</div>
                         </div>
                         <div className={classes["diary-pages-read"]}>{data.days[index].read}s.</div>
                     </div>)

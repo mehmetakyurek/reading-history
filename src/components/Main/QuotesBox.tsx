@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { RDate } from "../../class";
 import { RootState } from "../../store";
+import { splitAuthor } from "../util";
 import classes from "./scss/TextBoxes.module.scss"
 
 
@@ -13,13 +14,11 @@ export interface ITextOverview {
 export default function QuotesBox() {
     const data = useSelector((state: RootState) => {
         const q = state.quotes[state.quotes.length - 1];
-        const book = state.main.books.find(e => e.id === q?.book);
-
+        const book = state.main.books.find(e => e.id === q?.book)?.name;
+        const [name, author] = splitAuthor(book)
         return {
             text: q?.text ?? "",
-            from: {
-                name: book?.name ?? "", author: book?.author ?? ""
-            },
+            from: { name, author },
             date: q?.date ? new RDate(q.date).defaultDate : undefined
         }
     });

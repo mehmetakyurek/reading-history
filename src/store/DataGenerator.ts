@@ -35,8 +35,7 @@ export const generateBook = () => {
         for (let i = 0; i < count; i++) {
             const r = randomInteger(0, 3);
             store.dispatch(addBook({
-                author: faker.name.findName(),
-                name: toTitleCase(faker.lorem.words(2)),
+                name: toTitleCase(faker.lorem.words(2) + " - " + faker.name.findName()),
                 date: new RDate(date).Date,
                 list: r === 1 ? "toRead" : r === 2 ? "reading" : r === 3 ? "read" : undefined,
                 pages: randomInteger(50, 600)

@@ -9,6 +9,7 @@ import { BookState } from "../store/reducers/main"
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { RDate, RDateType } from "../class";
+import { splitAuthor } from "./util";
 export default function ListsPage() {
     const toRead = useSelector((state: RootState) => state.main.books.filter(e => e.list == "toRead"));
     const reading = useSelector((state: RootState) => state.main.books.filter(e => e.list == "reading"));
@@ -37,9 +38,10 @@ export default function ListsPage() {
 }
 
 const ListItem: FC<BookState> = (props): ReactElement => {
+    const [book, author] = splitAuthor(props.name); 
     return <div className={classes["list-box-item"]}>
         <div className={classes["list-box-item-book"]}>{props.name}</div>
-        <div className={classes["list-box-item-author"]}>{props.author}</div>
+        <div className={classes["list-box-item-author"]}>{author}</div>
         <div className={classes["list-box-item-page"]}>{props.pages}s.</div>
         <div className={classes["list-box-item-remaining"]}>{props.date != undefined ? getRemaining(props.date) : ""}</div>
     </div>

@@ -94,14 +94,13 @@ const DiaryPage: FC = (props): ReactElement => {
 export const getBookId = (books: Array<BookState>, text?: string) => {
     
     const t = text?.toLowerCase() ?? "";
-    const textSplit = t.split(" - ");
-    return text === undefined ? "" : books.find(e => e.name.toLowerCase() === t || (e.name.toLowerCase() === textSplit?.[0] && e.author?.toLowerCase() === textSplit[1]))?.id;
+    return text === undefined ? "" : books.find(e => e.name.toLowerCase() === t || (e.name.toLowerCase() === t?.[0]))?.id;
 }
 
 export default DiaryPage;
 
 const ReadingLogItem: FC<{ book?: BookState, id: string, read: number, customName?: string, onUpdate?: (data: { text: string, read: number }) => void, onDelete?: (id: string) => void }> = (props): ReactElement => {
-    const [name, setName] = useState(props.book ? (props.book.name + " - " + props.book.author) : props.customName ?? "");
+    const [name, setName] = useState(props.book ? (props.book.name) : props.customName ?? "");
     const [read, setRead] = useState(props.read);
     return <div className={classes["reading-log-item"]}>
         <input className={classes["reading-log-item-name"]} value={name} onChange={e => setName(e.target.value)} onBlur={() => props.onUpdate?.({ text: name, read: read })} />
@@ -134,7 +133,7 @@ const MonthOverview: FC<{ date: RDateType, onClick?: (date: RDateType) => void }
             const book = books.find(e => e.id === diary.readBooks[0]?.book);
             data.push({
                 date: diary.date,
-                book: book ? (book?.name + " - " + book?.author) : diary.readBooks[0]?.customName,
+                book: book ? (book?.name) : diary.readBooks[0]?.customName,
                 read: diary.readBooks[0]?.read,
                 rest: diary.readBooks?.length - 1 > 0 ? diary.readBooks?.length - 1 : undefined
             })

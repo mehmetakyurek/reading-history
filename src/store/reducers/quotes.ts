@@ -29,7 +29,7 @@ const quotesSlice = createSlice({
                 return { payload: { id: nanoid(), tags: getTags(quote.text), ...quote } }
             }
         },
-        updateQuote(state, action: PayloadAction<{ id: string, text: string, book?: string, author?: string, page?: number, customName?: string }>) {
+        updateQuote(state, action: PayloadAction<{ id: string, text: string, book?: string, page?: number, customName?: string }>) {
             const logIndex = state.findIndex(e => e.id === action.payload.id);
 
             state[logIndex] = {

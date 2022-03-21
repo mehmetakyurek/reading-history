@@ -25,7 +25,6 @@ import store from "./store"
 
 import { generate } from "./store/DataGenerator"
 
-import BookInput from './components/BookInput'; //Test
 import TitleBar from './components/TitleBar';
 class App extends React.Component {
   render() {
@@ -49,17 +48,6 @@ class App extends React.Component {
               <Route path="/summaries"><TitleBar page="Summaries" /><Summaries /></Route>
               <Route path="/plan" component={Plan} />
               <Route path="/logout"><Redirect to="/" /></Route>
-
-              <Route path="/book">
-                <div style={{
-                  width: "100%",
-                  height: "100%",
-                  display: 'flex',
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: "#32343D"
-                }}><BookInput changeLayout={true} value="Aut Blanditiis - Wilbert Hackett" /></div>
-              </Route>
             </Switch>
           </div>
         </Router>

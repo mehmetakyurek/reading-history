@@ -9,7 +9,6 @@ export type FilterData = {
     text: string,
     book?: {
         name: string,
-        author?: string,
         list?: BookList
     },
     date?: RDateType,
@@ -20,7 +19,6 @@ export function FilterAlgorithm(data: FilterData, searchText?: string, tags?: st
     return ((
         (s === "" && !tags) ||
         data.text.toLowerCase().includes(s) ||
-        data.book?.author?.toLowerCase().includes(s) ||
         data.book?.name.toLowerCase().includes(s) ||
         data.book?.list?.toLowerCase().includes(s) ||
         (data.date && createDateString(data.date).includes(s))) &&
@@ -56,4 +54,8 @@ export function getDates(year: number, month: number) {
     for (let i = 1; i <= last; i++) { dates.push({ current: true, date: i }) }
     for (let i = 1; i <= 42 - last - (first - 1); i++) { dates.push({ next: true, date: i }) }
     return dates;
+}
+
+export function splitAuthor(bookName?: string): string[] {
+    return bookName ? bookName?.split(" - ") : ["", ""];
 }

@@ -71,7 +71,7 @@ const MonthItem: FC<{ year: number, month: number, hideCurrentMonth?: boolean, o
 
                     {books.slice(startIndex, startIndex + 4).map((e, index) => <LogRow
                         date={e.date?.date ?? 0}
-                        book={e.name + ((e.author?.length || 0) > 0 ? " - " + e.author : "")}
+                        book={e.name}
                         read={e.list === "read"}
                         currentMonth={current}
                         current={current && (startIndex + index) === (todayIndex)}
