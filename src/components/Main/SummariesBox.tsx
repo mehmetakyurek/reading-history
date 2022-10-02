@@ -10,7 +10,7 @@ export default function SummariesBox() {
 
     const data = useSelector<RootState, ITextOverview>((state) => {
         const summary = state.summaries[state.summaries.length - 1];
-        const book = state.main.books.find(e => e.id === summary?.book)?.name;
+        const book = state.lists.flat().find(e => e.id === summary?.book)?.name;
         const [name, author] = splitAuthor(book)
         return summary ? {
             text: summary?.text ?? "",

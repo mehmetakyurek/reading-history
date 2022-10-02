@@ -3,6 +3,7 @@ import MainReducer, { } from "./reducers/main"
 import DiarySlice from "./reducers/diary"
 import SummariesSlice from "./reducers/summaries"
 import QuotesSlice from "./reducers/quotes"
+import ListsSlice from "./reducers/lists"
 import { persistStore, persistReducer } from 'redux-persist'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { PersistorOptions } from "redux-persist/es/types"
@@ -11,7 +12,8 @@ const RootReducer = combineReducers({
   main: MainReducer,
   diary: DiarySlice,
   summaries: SummariesSlice,
-  quotes: QuotesSlice
+  quotes: QuotesSlice,
+  lists: ListsSlice
 })
 
 const persistConfig = {
@@ -33,4 +35,4 @@ export let persistor = persistStore(store, ({
 } as unknown) as PersistorOptions)
 
 
-export type { BookState } from "./reducers/main"
+export type { BookState } from "./reducers/lists"

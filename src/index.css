@@ -10,6 +10,7 @@ body, html {
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
   grid-template-areas: "titlebar" "root";
+  overflow: hidden;
 }
 #root {
   grid-area: root;

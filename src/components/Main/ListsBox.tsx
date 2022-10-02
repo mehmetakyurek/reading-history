@@ -7,8 +7,7 @@ import cn from "classnames"
 type SectionData = { books: Array<BookState>, rest: number };
 
 const ListBoxSelector = (state: RootState): Array<SectionData> => {
-    const lists = [state.main.books.filter(e => e.list === "toRead"), state.main.books.filter(e => e.list === "reading"), state.main.books.filter(e => e.list === "read")]
-    return lists.map(e => { return { books: e.slice(0, 3), rest: e.length > 3 ? e.length - 3 : 0 } })
+    return state.lists.map(e => { return { books: e.slice(0, 3), rest: e.length > 3 ? e.length - 3 : 0 } })
 }
 
 function Section(props: { list: SectionData, className?: string }) {
@@ -23,6 +22,7 @@ function Section(props: { list: SectionData, className?: string }) {
 
 export default function ListsBox() {
     const data = useSelector(ListBoxSelector);
+    
     return <>
         <div className={classes["overview-lists"]}>
             <div className={classes["section-container"]}>

@@ -38,8 +38,6 @@ export default class Login extends Component<{}, { val: string, auth: boolean, f
                 if (this.state.fileExists) {
                   const login = await window.electron.login(this.state.val)
                   this.setState({ auth: login })
-                  console.log(login);
-
                 } else if (await window.electron.createUser(this.state.val)) {
                   this.setState({ auth: true })
                 }

@@ -9,7 +9,7 @@ export type FilterData = {
     text: string,
     book?: {
         name: string,
-        list?: BookList
+        list: number
     },
     date?: RDateType,
     tags?: string[]
@@ -20,7 +20,7 @@ export function FilterAlgorithm(data: FilterData, searchText?: string, tags?: st
         (s === "" && !tags) ||
         data.text.toLowerCase().includes(s) ||
         data.book?.name.toLowerCase().includes(s) ||
-        data.book?.list?.toLowerCase().includes(s) ||
+        s.includes(data.book?.list === 0 ? "to read" : data.book?.list === 1 ? "reading" : "read") ||
         (data.date && createDateString(data.date).includes(s))) &&
         (
             (tags === undefined || tags?.length === 0) ||

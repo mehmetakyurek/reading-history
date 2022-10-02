@@ -14,7 +14,7 @@ export interface ITextOverview {
 export default function QuotesBox() {
     const data = useSelector((state: RootState) => {
         const q = state.quotes[state.quotes.length - 1];
-        const book = state.main.books.find(e => e.id === q?.book)?.name;
+        const book = state.lists.flat().find(e => e.id === q?.book)?.name;
         const [name, author] = splitAuthor(book)
         return {
             text: q?.text ?? "",

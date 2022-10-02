@@ -1,13 +1,14 @@
-import { BrowserWindow, app, ipcMain, globalShortcut } from "electron"
+import { BrowserWindow, app, ipcMain, globalShortcut, session } from "electron"
 import { Store } from "./store";
-
+import { homedir } from "os"
 let window: BrowserWindow;
 let store: Store;
 
 Promise.all([app.whenReady(), Store.init()]).then((val) => {
     store = val[1];
     createWindow();
-    globalShortcut.register('CommandOrControl+R', () => {})
+    globalShortcut.register('CommandOrControl+R', () => { })
+    if (!app.isPackaged) session.defaultSession.loadExtension(homedir() + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\4.24.0_0")
 })
 
 function createWindow() {

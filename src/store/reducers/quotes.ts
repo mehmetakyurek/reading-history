@@ -3,7 +3,7 @@ import { nanoid } from "nanoid";
 import { RootState } from "..";
 import { RDateType } from "../../class";
 import { getTags } from "./utilities";
-import { BookState } from "./main";
+import { BookState } from "./lists";
 
 export type QuoteField = {
     id: string
@@ -49,13 +49,13 @@ const quotesSlice = createSlice({
     }
 });
 
-const getBooks = (state: RootState) => state.main.books;
+const getBooks = (state: RootState) => state.lists;
 const getQuotes = (state: RootState) => state.quotes;
 
 export const quotesSelector = createSelector([getBooks, getQuotes], (books, quotes) => {
     const data: Array<Quote> = [];
     for (let e of quotes) {
-        const book = books.find(q => q.id === e.book);
+        const book = books.flat().find(q => q.id === e.book);
         if (book) data.push({ ...e, book: book })
         else data.push({ ...e, book: undefined })
 

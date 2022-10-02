@@ -1,6 +1,6 @@
 import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit"
 import { RDate, RDateType } from "../../class"
-import { BookState } from "./main"
+import { BookState } from "./lists"
 
 export type DiaryField = {
     id: string

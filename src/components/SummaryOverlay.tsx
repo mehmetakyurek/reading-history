@@ -14,14 +14,14 @@ const SummaryOverlay: FC<{ id?: string, counter?: number }> = (props): ReactElem
     
     const summary = useSelector((state: RootState) => state.summaries.find(e => e.id === props.id));
 
-    const book = useSelector((state: RootState) => state.main.books.find(e => e.id === summary?.book));
+    const book = useSelector((state: RootState) => state.lists.flat().find(e => e.id === summary?.book));
     const [text, setText] = useState(summary?.text ?? "");
     const [customText, setCustomText] = useState(book?.name || summary?.source || "");
 
 
     const [enabled, setEnabled] = useState(false);
 
-    const books = useSelector((state: RootState) => state.main.books);
+    const books = useSelector((state: RootState) => state.lists.flat());
 
     useEffect(() => {
         setText(summary?.text ?? "");

@@ -83,8 +83,8 @@ const AddQuoteOverlay: FC<{ id?: string, OC: number }> = (props): ReactElement =
     const [page, setPage] = useState<number>(0);
     const [text, setQuote] = useState<string>("");
     const quote = useSelector((state: RootState) => state.quotes.find(e => e.id === props.id));
-    const books = useSelector((state: RootState) => state.main.books);
-    const book = useSelector((state: RootState) => state.main.books.find(e => e.id === quote?.book ?? ""));
+    const books = useSelector((state: RootState) => state.lists.flat());
+    const book = useSelector((state: RootState) => state.lists.flat().find(e => e.id === quote?.book ?? ""));
 
     const dispatch = useDispatch();
 
@@ -101,7 +101,7 @@ const AddQuoteOverlay: FC<{ id?: string, OC: number }> = (props): ReactElement =
         }
     }, [props.OC])
 
-    return <div id="add-quote-overlay-bg" className={classes["add-quote-overlay"]} style={{ display: enabled ? "" : "none" }} onKeyUp={e => console.log(e.key)}
+    return <div id="add-quote-overlay-bg" className={classes["add-quote-overlay"]} style={{ display: enabled ? "" : "none" }}
         onClick={(e) => {
             if ((e.target as HTMLElement).id === "add-quote-overlay-bg") setEnabled(false);
         }}>

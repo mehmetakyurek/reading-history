@@ -19,13 +19,13 @@ import Diary from "./components/Diary"
 import Quotes from "./components/Quotes"
 import Settings from "./components/Settings"
 import Summaries from './components/Summaries';
-import Plan from "./components/Plan"
 
 import store from "./store"
 
 import { generate } from "./store/DataGenerator"
 
 import TitleBar from './components/TitleBar';
+import LogList from './components/LogList';
 class App extends React.Component {
   render() {
     persistor.persist();
@@ -41,12 +41,11 @@ class App extends React.Component {
           <div className="App">
             <Switch>
               <Route path="/main"><TitleBar page="Main" /><Main /></Route>
-              <Route path="/plan"><TitleBar page="Plan" /><Plan /></Route>
+              <Route path="/plan"><TitleBar page="Plan" /><LogList /></Route>
               <Route path="/diary"><TitleBar page="Diary" /><Diary /></Route>
               <Route path="/settings"><TitleBar page="Settings" /><Settings /></Route>
               <Route path="/quotes"><TitleBar page="Quotes" /><Quotes /></Route>
               <Route path="/summaries"><TitleBar page="Summaries" /><Summaries /></Route>
-              <Route path="/plan" component={Plan} />
               <Route path="/logout"><Redirect to="/" /></Route>
             </Switch>
           </div>

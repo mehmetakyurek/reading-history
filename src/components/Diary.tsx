@@ -3,7 +3,7 @@ import { FC, ReactElement, useEffect, useRef, useState } from "react"
 import Datepicker from "./Datepicker"
 import { RootState } from "../store";
 import { useDispatch, useSelector } from "react-redux";
-import { BookState } from "../store/reducers/main";
+import { BookState } from "../store/reducers/lists";
 import { RDate, RDateType } from "../class";
 import { useHistory } from "react-router";
 import { createSelector } from "reselect";
@@ -16,9 +16,9 @@ const DiaryPage: FC = (props): ReactElement => {
     const [diaryText, setDiaryText] = useState("");
     const dispatch = useDispatch();
     const target = useSelector((state: RootState) => state.main.target);
-    const books = useSelector((state: RootState) => state.main.books);
+    const books = useSelector((state: RootState) => state.lists.flat());
     const log = useSelector((state: RootState) => createSelector([
-        (state: RootState) => state.main.books,
+        (state: RootState) => state.lists.flat(),
         (state: RootState) => state.diary
     ], (books, diaries) => {
         const l = diaries.find(e => e.date.year === date.year && e.date.month === date.month && e.date.date === date.date)
@@ -63,8 +63,6 @@ const DiaryPage: FC = (props): ReactElement => {
                         key={e.id}
                         onUpdate={data => {
                             const book = getBookId(books, data.text);
-
-                            console.log(book);
                             if (book) dispatch(updateLog({ date, id: e.id, data: { book, read: data.read } }))
                             else dispatch(updateLog({ date, id: e.id, data: { customName: data.text, read: data.read } }))
                         }}
@@ -124,13 +122,13 @@ const AddNewLogItem: FC<{ onEntry: (name: string, read?: number) => void }> = (p
 }
 
 const MonthOverview: FC<{ date: RDateType, onClick?: (date: RDateType) => void }> = (props): ReactElement => {
-    const getBooks = (state: RootState) => state.main.books;
+    const getBooks = (state: RootState) => state.lists;
     const getDiary = (state: RootState) => state.diary;
     const dayData = useSelector((state: RootState) => createSelector([getBooks, getDiary], (books, diaries) => {
         const data = new Array<MonthOverviewItemT>();
         for (const diary of diaries.filter(e => e.date.year === props.date.year && e.date.month === props.date.month)) {
 
-            const book = books.find(e => e.id === diary.readBooks[0]?.book);
+            const book = books.flat().find(e => e.id === diary.readBooks[0]?.book);
             data.push({
                 date: diary.date,
                 book: book ? (book?.name) : diary.readBooks[0]?.customName,

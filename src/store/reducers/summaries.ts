@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction, nanoid, createSelector } from "@reduxjs/toolkit"
 import { RootState } from ".."
 import { RDateType } from "../../class"
-import { BookState } from "./main"
+import { BookState } from "./lists"
 import { getTags } from "./utilities"
 
 type SummaryField = {
@@ -53,12 +53,12 @@ const SummariesSlice = createSlice({
 
 
 export const SummariesSelector = createSelector([
-    (state: RootState) => state.main.books,
+    (state: RootState) => state.lists,
     (state: RootState) => state.summaries],
     (books, summaries) => {
         const data: Array<Summary> = [];
         for (const e of summaries) {
-            const book = books.find(q => q.id === e.book);
+            const book = books.flat().find(q => q.id === e.book);
             data.push({ ...e, book: book });
         }
         return data;

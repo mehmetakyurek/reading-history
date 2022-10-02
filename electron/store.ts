@@ -94,8 +94,6 @@ export class Store {
         if (this.fileExists) {
             if (this.encrypted) {
                 const data = (await this.file.read({ length: 49, position: 1, buffer: Buffer.alloc(48) })).buffer;
-                console.log(data);
-
                 const [hash, salt] = [data.slice(0, 32), data.slice(32, 48)];
                 const pwdHash = await this.hashString(pwd, salt)
                 if (pwdHash.equals(hash)) {

@@ -26,11 +26,11 @@ function DiarySelector(state: RootState) {
     for (let i = 1; i <= 7; i++) {
         const index = state.diary.findIndex(e => e.date.year === date.getFullYear() && e.date.month === date.getMonth() && e.date.date === date.getDate());
 
-        const bookIndex = state.main.books.findIndex(e => e.id === state.diary[index]?.readBooks[0]?.book);
+        const bookIndex = state.lists.flat().findIndex(e => e.id === state.diary[index]?.readBooks[0]?.book);
         let read = 0;
         for (let i of state.diary[index]?.readBooks ?? []) read += i.read ?? 0;
         logs.days.push({
-            book: state.main.books[bookIndex]?.name,
+            book: state.lists.flat()[bookIndex]?.name,
             read,
             rest: Math.max(state.diary[index]?.readBooks.length - 2, 0) ?? 0
         })
