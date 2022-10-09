@@ -31,23 +31,35 @@ const List: FC<{ logs: Array<BookState>, header: string, drag?: (drag?: onDragTy
     const calculateOrder = useCallback((e: React.MouseEvent<HTMLDivElement>, ignoreDragItem?: boolean) => {
         if ((props.dragItem || ignoreDragItem) && wrapper.current) {
             const items = [...wrapper.current.children].filter(e => !(e.classList.contains(classes["preview"]))) as Array<HTMLDivElement>;
-            if(items.length === 0) setOrder(0);
+            if (items.length === 0) setOrder(0);
             for (let i = 0; i < items.length; i++) {
                 if (e.pageY <= wrapper.current.offsetTop ?? 0) {
                     setOrder(0);
                     break;
                 }
-                else if ((e.pageY >= ((items[items.length - 1]?.offsetTop + items[items.length - 1]?.offsetHeight) ?? 0))) {
+                else if (((e.pageY + wrapper.current.scrollTop) >= ((items[items.length - 1]?.offsetTop + items[items.length - 1]?.offsetHeight) ?? 0))) {
                     setOrder(items.length);
                     break;
-                } else if ((e.pageY <= (items[i].offsetTop + items[i].offsetHeight) && e.pageY >= (items[i].offsetHeight / 2))) {
+                } else if (((e.pageY + wrapper.current.scrollTop) <= (items[i].offsetTop + items[i].offsetHeight) && e.pageY >= (items[i].offsetHeight / 2))) {
                     setOrder(i);
                     break;
                 }
             }
+            if (wrapper.current && wrapper.current.scrollHeight > 0) {
+                clearInterval(interval)
+                if (e.pageY >= (wrapper.current.offsetTop + wrapper.current.offsetHeight) - 30) {
+                    interval = setInterval(() => {
+                        if (wrapper.current) wrapper.current.scrollTop += 2;
+                    }, 1);
+                } else if (e.pageY <= wrapper.current.offsetTop + 30) {
+                    interval = setInterval(() => {
+                        if (wrapper.current) wrapper.current.scrollTop -= 2;
+                    }, 1);
+                } else { clearInterval(interval) }
+            }
         }
     }, [wrapper.current, setOrder, props.dragItem])
-
+    let interval: NodeJS.Timer;
     let timeOut: NodeJS.Timeout;
     const items = [...props.logs]
     if (id > -1) items.splice(id, 1)
@@ -84,7 +96,7 @@ const ListItem: FC<{ book: BookState, drag?: (drag?: onDragType) => void, hidden
         if (e.button === 0) {
             props.drag?.({
                 book: props.book,
-                point: { x: e.clientX - e.currentTarget.offsetLeft, y: e.screenY - (e.currentTarget.offsetTop - (e.currentTarget.parentElement?.scrollTop ?? 0)) },
+                point: { x: e.clientX - e.currentTarget.offsetLeft, y: e.clientY - (e.currentTarget.offsetTop - (e.currentTarget.parentElement?.scrollTop ?? 0)) },
                 size: { x: e.currentTarget.clientWidth, y: e.currentTarget.clientHeight }
             });
             document.body.style.userSelect = "none";
