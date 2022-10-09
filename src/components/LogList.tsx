@@ -2,7 +2,6 @@ import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from "re
 import { createPortal } from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { BookState, RootState } from "../store";
-import { BookList } from "../store/reducers/main";
 import { move } from "../store/reducers/lists";
 
 import classes from "./styles/LogList.module.scss"
@@ -31,15 +30,17 @@ const List: FC<{ logs: Array<BookState>, header: string, drag?: (drag?: onDragTy
     const id = useMemo(() => props.logs.findIndex(e => e.id === props.dragItem?.id), [props.dragItem, props.logs]);
     const calculateOrder = useCallback((e: React.MouseEvent<HTMLDivElement>, ignoreDragItem?: boolean) => {
         if ((props.dragItem || ignoreDragItem) && wrapper.current) {
-            const items = [...wrapper.current.children].filter(e => !e.classList.contains(classes["hidden"])) as Array<HTMLDivElement>;
-            //console.log(items, wrapper.current.children);
-
+            const items = [...wrapper.current.children].filter(e => !(e.classList.contains(classes["preview"]))) as Array<HTMLDivElement>;
+            if(items.length === 0) setOrder(0);
             for (let i = 0; i < items.length; i++) {
-                //console.log(id, i, items[i].classList.toString(), items[i].offsetHeight, items[i].offsetTop);
-                if ((
-                    ((items[i]).offsetTop + (items[i]).offsetHeight / 2) - wrapper.current.offsetTop)
-                    >
-                    ((e.pageY - wrapper.current.offsetTop) + (wrapper.current.scrollTop))) {
+                if (e.pageY <= wrapper.current.offsetTop ?? 0) {
+                    setOrder(0);
+                    break;
+                }
+                else if ((e.pageY >= ((items[items.length - 1]?.offsetTop + items[items.length - 1]?.offsetHeight) ?? 0))) {
+                    setOrder(items.length);
+                    break;
+                } else if ((e.pageY <= (items[i].offsetTop + items[i].offsetHeight) && e.pageY >= (items[i].offsetHeight / 2))) {
                     setOrder(i);
                     break;
                 }
@@ -48,7 +49,9 @@ const List: FC<{ logs: Array<BookState>, header: string, drag?: (drag?: onDragTy
     }, [wrapper.current, setOrder, props.dragItem])
 
     let timeOut: NodeJS.Timeout;
-
+    const items = [...props.logs]
+    if (id > -1) items.splice(id, 1)
+    if (order > -1 && props.dragItem) items.splice(order, 0, props.dragItem);
     return <div
         className={classes["list"]}
         onMouseMove={e => {
@@ -58,7 +61,7 @@ const List: FC<{ logs: Array<BookState>, header: string, drag?: (drag?: onDragTy
             }
         }}
         onMouseLeave={() => { setOrder(-1); clearTimeout(timeOut) }}
-        onMouseDown={e => calculateOrder(e, true)}
+        onMouseDown={e => props.dragItem ? calculateOrder(e, true) : undefined}
         onMouseUp={e => {
             if (props.dragItem) {
                 dispatch(move({ id: props.dragItem.id, list: props.header === "Read" ? 2 : props.header === "Reading" ? 1 : 0, order }))
@@ -66,14 +69,12 @@ const List: FC<{ logs: Array<BookState>, header: string, drag?: (drag?: onDragTy
             }
         }}
     ><div className={classes["list-header"]}>{props.header}</div>
-        <div className={classes["wrapper"]} ref={wrapper}>{props.logs.map((e, i) => {
-            return <>
-                {order === i && props.dragItem && <ListItem book={props.dragItem} preview />}
-                {<ListItem hidden={id === i} book={e} key={e.id} drag={props.drag} />}
-                {console.log(order, i)}
-                {order === props.logs.length - (id > -1 ? 1 : 0 ) && order - 1 === id && props.dragItem && <ListItem book={props.dragItem} preview />}
+        <div className={classes["wrapper"]} ref={wrapper}>
+            {items.map((e, i) => <>
+                {<ListItem book={e} key={e.id} preview={order === i} hidden={e.id === props.dragItem?.id && order !== i} drag={order !== i ? props.drag : undefined} />}
             </>
-        })}</div>
+            )}
+        </div>
     </div>
 }
 type onDragType = { book: BookState, point: Point, size: Point }
@@ -92,7 +93,7 @@ const ListItem: FC<{ book: BookState, drag?: (drag?: onDragType) => void, hidden
                 document.body.style.userSelect = "";
             }, { once: true })
         }
-    }}>
+    }} onMouseUp={() => props.drag?.()}>
 
         <div className={classes["book"]}>
             <div className={classes["book-name"]}>{props.book.name}</div>

@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
+import { listenerCancelled } from "@reduxjs/toolkit/dist/listenerMiddleware/exceptions";
 import { nanoid } from "nanoid";
 import { RDateType } from "../../class";
 
@@ -15,11 +16,11 @@ export type BookState = {
 
 const ListsSlice = createSlice({
     name: "Lists",
-    initialState: [[],[],[]] as Array<Array<BookState>>,
+    initialState: [[], [], []] as Array<Array<BookState>>,
     reducers: {
-        addBook: {  
+        addBook: {
             reducer(state, action: PayloadAction<BookState>) {
-                if(!state[action.payload.list]) state[action.payload.list] = [];
+                if (!state[action.payload.list]) state[action.payload.list] = [];
                 state[action.payload.list].push(action.payload);
             },
             prepare: (book: PartialBy<Omit<BookState, "id">, "list">) => {
@@ -36,8 +37,19 @@ const ListsSlice = createSlice({
             if (index > -1) state[action.payload.list].splice(index, 1);
         },
         move(state, action: PayloadAction<{ id: string, list: number, order?: number }>) {
-            console.log(action.payload.order);
-            
+            if (Number(action.payload.order) !== NaN && action.payload.list <= 2 && action.payload.list >= 0) {
+                let OldId = -1;
+                const oldList = state.findIndex(list =>
+                    list.findIndex((item, index) => {
+                        if (item.id === action.payload.id) {
+                            OldId = index;
+                            return true;
+                        }
+                    }) >= 0
+                )
+                const oldItem = state[oldList].splice(OldId, 1)[0];
+                state[action.payload.list].splice(action.payload.order!, 0, oldItem)
+            }
         }
     }
 })
