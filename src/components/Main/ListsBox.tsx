@@ -14,7 +14,7 @@ function Section(props: { list: SectionData, className?: string }) {
     return <div className={cn(classes["section"], props.className)}>
         <div className={classes["left"]}><div className={classes["line"]} /></div>
         <div className={classes["books"]}>
-            {props.list.books.map(e => <div className="book">{e.name}</div>)}
+            {props.list.books.map(e => <div key={e.id} className="book">{e.name}</div>)}
             <div className={classes["rest"]}>{props.list.rest ? "+" + props.list.rest : ""}</div>
         </div>
     </div>

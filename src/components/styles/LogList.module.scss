@@ -24,10 +24,8 @@
         padding: 0 10px;
         row-gap: 16px;
         overflow: auto;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-content: flex-start;
+        position: relative;
+
         .list-item.preview {
             background-color: #0a0b0c;
         }
@@ -38,6 +36,8 @@
     background-color: #23252c;
 }
 .list-item {
+    position: absolute;
+    left: 0;
     width: 100%;
     height: max-content;
     box-sizing: border-box;
@@ -46,6 +46,7 @@
     grid-template-columns: minmax(0, 1fr) auto auto;
     background-color: #1a1d24;
     border-radius: 4px;
+    transition: top 200ms;
     .book-name {
         overflow: hidden;
         text-overflow: ellipsis;

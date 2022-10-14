@@ -36,7 +36,7 @@ export const generateBook = () => {
             store.dispatch(addBook({
                 name: toTitleCase(faker.lorem.words(2) + " - " + faker.name.findName()),
                 date: new RDate(date).Date,
-                list: randomInteger(0, 3),
+                list: randomInteger(0, 2),
                 pages: randomInteger(50, 600)
             }))
         }
@@ -53,7 +53,7 @@ const lilGenerateBook = () => {
             name: toTitleCase(faker.lorem.words(2) + " - " + faker.name.findName()),
             date: new RDate(date).Date,
             finishDate: new RDate(finishDate).Date,
-            list: randomInteger(0, 3),
+            list: randomInteger(0, 2),
             pages: randomInteger(50, 600),
         }))
     }
