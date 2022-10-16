@@ -1,9 +1,9 @@
 import classes from "./styles/Login.module.scss"
-import {Component, FC, PropsWithChildren } from "react";
+import { Component, FC, PropsWithChildren } from "react";
 import cn from "classnames"
 import TitleBar from "./TitleBar";
 
-export default class Login extends Component<{}, { val: string, auth: boolean, fileExists?: boolean, isEncrypted?: boolean }> {
+export default class Login extends Component<PropsWithChildren<{}>, { val: string, auth: boolean, fileExists?: boolean, isEncrypted?: boolean }> {
   constructor(props: PropsWithChildren<{}>) {
     super(props);
     this.state = {

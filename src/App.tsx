@@ -1,9 +1,8 @@
 import React from 'react';
 import {
   MemoryRouter as Router,
-  Switch,
   Route,
-  Redirect,
+  Routes
 } from "react-router-dom"
 import { Provider } from "react-redux"
 import { PersistGate } from "redux-persist/integration/react"
@@ -39,15 +38,14 @@ class App extends React.Component {
 
         <Router initialEntries={["/main"]}>
           <div className="App">
-            <Switch>
-              <Route path="/main"><TitleBar page="Main" /><Main /></Route>
-              <Route path="/plan"><TitleBar page="Plan" /><LogList /></Route>
-              <Route path="/diary"><TitleBar page="Diary" /><Diary /></Route>
-              <Route path="/settings"><TitleBar page="Settings" /><Settings /></Route>
-              <Route path="/quotes"><TitleBar page="Quotes" /><Quotes /></Route>
-              <Route path="/summaries"><TitleBar page="Summaries" /><Summaries /></Route>
-              <Route path="/logout"><Redirect to="/" /></Route>
-            </Switch>
+            <Routes>
+              <Route path="/main" element={<Main />}></Route>
+              <Route path="/plan" element={<LogList />}></Route>
+              <Route path="/diary" element={<Diary />}></Route>
+              <Route path="/settings" element={<Settings />}></Route>
+              <Route path="/quotes" element={<Quotes />}></Route>
+              <Route path="/summaries" element={<Summaries />}></Route>
+            </Routes>
           </div>
         </Router>
       </PersistGate>

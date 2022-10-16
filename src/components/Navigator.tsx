@@ -1,4 +1,4 @@
-import { Link, useHistory } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import classes from "./styles/NavigationBar.module.scss";
 
@@ -8,11 +8,11 @@ import { ReactComponent as QuotesIcon } from "./styles/img/quotes.svg"
 import { ReactComponent as SummariesIcon } from "./styles/img/summaries.svg"
 
 export default function NavigationBar() {
-    const history = useHistory();
+    const navigate = useNavigate();
     
     function stopPropagation(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) { e.stopPropagation() }
     
-    return <div className={classes["navigation-bar"]} onClick={() => history.push("/main")}>
+    return <div className={classes["navigation-bar"]} onClick={() => navigate("/main")}>
         <div className={classes["navigation-bar-icon-container"]}>
             <Link to="/plan" onClick={stopPropagation}><ListsIcon /></Link>
             <Link to="/diary" onClick={stopPropagation}><DiaryIcon /></Link>

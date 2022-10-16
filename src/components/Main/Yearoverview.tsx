@@ -1,6 +1,6 @@
 import React, { createRef, FC, ReactElement, useState } from "react"
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { RDate } from "../../class";
 import { RootState } from "../../store";
 import classes from "./scss/YearOverview.module.scss"
@@ -39,39 +39,41 @@ export default function YearOverview() {
     })
 
     return <div className={classes["year-overview"]}>
-        {createPortal(<div ref={HoverBoxRef} className="hover-box">
-            <div className={classes["hover-box-date"]}>{hoverDate}</div>
-            <div className={classes["hover-box-read"]}>{hoverRead}s.</div>
-        </div>, (document.getElementById("root")!))}
-        <div className={classes["year-overview-year"]}>{date.getFullYear()}</div>
-        <div className={classes["year-overview-data-container"]}>
-            <div className={classes["year-overview-data-week"]}>W1</div>
-            <div className={classes["year-overview-data-week"]}>W52</div>
-            <div className={classes["year-overview-data-info"]}>
-                Less<div className={classes["year-overview-data-info-boxes"]}><div /><div /><div /><div /><div /></div>More
+        <>
+            {createPortal(<div ref={HoverBoxRef} className="hover-box">
+                <div className={classes["hover-box-date"]}>{hoverDate}</div>
+                <div className={classes["hover-box-read"]}>{hoverRead}s.</div>
+            </div>, (document.getElementById("root")!))}
+            <div className={classes["year-overview-year"]}>{date.getFullYear()}</div>
+            <div className={classes["year-overview-data-container"]}>
+                <div className={classes["year-overview-data-week"]}>W1</div>
+                <div className={classes["year-overview-data-week"]}>W52</div>
+                <div className={classes["year-overview-data-info"]}>
+                    Less<div className={classes["year-overview-data-info-boxes"]}><div /><div /><div /><div /><div /></div>More
+                </div>
+                <div className={classes["year-overview-data"]}>
+                    {YearData.map(daydata =>
+                        <YearDataDayBox
+                            onMouseEnter={(e, read, date) => {
+                                const rect = e.currentTarget.getBoundingClientRect();
+                                setHoverRead((read ?? 0));
+                                setHoverDate(date);
+                                if (HoverBoxRef.current) {
+                                    HoverBoxRef.current.style.top = rect.top + "px";
+                                    HoverBoxRef.current.style.left = rect.left + "px";
+                                    HoverBoxRef.current.style.opacity = "1";
+                                }
+                            }}
+                            onMouseLeave={() => {
+                                if (HoverBoxRef.current) HoverBoxRef.current.style.opacity = "0";
+                            }}
+                            {...daydata}
+                            key={daydata.date.toLocaleDateString()}
+                            target={target}
+                        />)}
+                </div>
             </div>
-            <div className={classes["year-overview-data"]}>
-                {YearData.map(daydata =>
-                    <YearDataDayBox
-                        onMouseEnter={(e, read, date) => {
-                            const rect = e.currentTarget.getBoundingClientRect();
-                            setHoverRead((read ?? 0));
-                            setHoverDate(date);
-                            if (HoverBoxRef.current) {
-                                HoverBoxRef.current.style.top = rect.top + "px";
-                                HoverBoxRef.current.style.left = rect.left + "px";
-                                HoverBoxRef.current.style.opacity = "1";
-                            }
-                        }}
-                        onMouseLeave={() => {
-                            if (HoverBoxRef.current) HoverBoxRef.current.style.opacity = "0";
-                        }}
-                        {...daydata}
-                        key={daydata.date.toLocaleDateString()}
-                        target={target}
-                    />)}
-            </div>
-        </div>
+        </>
     </div>
 }
 
@@ -83,15 +85,16 @@ const YearDataDayBox: FC<{
     onMouseEnter?: (e: React.MouseEvent, read: number, date: string) => void,
     onMouseLeave?: React.MouseEventHandler<HTMLDivElement>
 }> = (props): ReactElement => {
-    const history = useHistory();
+    const history = useNavigate();
     return <div
         onMouseEnter={e => props.onMouseEnter?.(e, props.read ?? 0, props.date.getDate() + "." + (props.date.getMonth() + 1))}
         onMouseLeave={props.onMouseLeave}
-        onClick={(e) => history.push({ pathname: "/diary", state: { date: new RDate(new Date(Number(e.currentTarget.getAttribute("data-date")))) } })}
+        onClick={(e) => history("/diary", { state: { date: new RDate(new Date(Number(e.currentTarget.getAttribute("data-date")))) } })}
         data-date={props.date.getTime()}
-        style={{ backgroundColor: "var(--color-level-" + Math.min(Math.round(((props.read ?? 1) / props.target) * 5), 5) + ")" }}
-        className={classes["year-overview-data-day"] + ((props?.future) ? (" " + classes["blank"]) : "")}>
-    </div>
+        style={{ backgroundColor: "var(--color-level-" + Math.min(Math.round(((props.read ?? 1) / props.target) * 5), 5) + ")" }
+        }
+        className={classes["year-overview-data-day"] + ((props?.future) ? (" " + classes["blank"]) : "")} >
+    </div >
 }
 
 type YearData = Array<{

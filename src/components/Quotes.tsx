@@ -16,6 +16,7 @@ import { ReactComponent as AddButton } from "./styles/img/plus.svg";
 import { updateQuote } from "../store/reducers/quotes"
 import { getBookId } from "./Diary"
 import { createDateString, FilterAlgorithm, splitAuthor } from "./util";
+import TitleBar from "./TitleBar";
 
 
 const QuotesPage: FC = (props): ReactElement => {
@@ -26,7 +27,7 @@ const QuotesPage: FC = (props): ReactElement => {
     const [searchText, setSearchText] = useState("");
     const [selectedTags, setTags] = useState<Array<string>>([]);
     const [OC, setOC] = useState(0);
-    return <>
+    return <><TitleBar page="Quotes" />
         <AddQuoteOverlay id={id} OC={OC} />
 
         <div className={classes["container"]}>
@@ -108,7 +109,7 @@ const AddQuoteOverlay: FC<{ id?: string, OC: number }> = (props): ReactElement =
         <div className={classes["add-quote-content-container"]} >
             <div className={classes.QuoteBoxHeader}>
                 <input className={classes.QuoteBoxHeaderName} value={bookInput} placeholder={"Name"} onChange={e => setBookInput(e.currentTarget.value)} />
-                <div className={classes.QuoteBoxHeaderPage} >Page: <input value={page || ""} type="number" style={{ width: page.toString().length + "ch" }} onChange={ e => setPage(Number(e.currentTarget.value))} /></div>
+                <div className={classes.QuoteBoxHeaderPage} >Page: <input value={page || ""} type="number" style={{ width: page.toString().length + "ch" }} onChange={e => setPage(Number(e.currentTarget.value))} /></div>
             </div>
             <div className={classes["add-quote-text"]}>
                 <textarea value={text} placeholder={"Quote..."} spellCheck={false} onChange={e => setQuote(e.currentTarget.value)}></textarea>

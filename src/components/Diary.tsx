@@ -5,14 +5,16 @@ import { RootState } from "../store";
 import { useDispatch, useSelector } from "react-redux";
 import { BookState } from "../store/reducers/lists";
 import { RDate, RDateType } from "../class";
-import { useHistory } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { createSelector } from "reselect";
 import { addLog, updateLog, removeLog, updateDiaryText } from "../store/reducers/diary";
 import { ReactComponent as RemoveButton } from "./styles/img/remove.svg";
+import TitleBar from "./TitleBar";
 
 const DiaryPage: FC = (props): ReactElement => {
-    const history = useHistory<{ date: RDateType }>();
-    const [date, setDate] = useState<RDateType>(history.location.state?.date || new RDate().Date);
+    const history = useNavigate();
+    const location = useLocation();
+    const [date, setDate] = useState<RDateType>(location.state?.date || new RDate().Date);
     const [diaryText, setDiaryText] = useState("");
     const dispatch = useDispatch();
     const target = useSelector((state: RootState) => state.main.target);
@@ -51,46 +53,48 @@ const DiaryPage: FC = (props): ReactElement => {
         setDiaryText(log?.text || "");
     }, [log?.text])
     const [changed, setChanged] = useState(false);
-    return <div className={classes["container"]}>
-        <div className={classes["container-left"]}>
-            <div className={classes["datepicker"]}>
-                <Datepicker date={{ ...date }} changed={changed} dateChanged={(date) => { setDate(date); history.replace("/diary", { date: date }); }} />
-            </div>
-            <div className={classes["reading-log"]}>
-                <div className={classes["reading-log-items"]}>
-                    {log?.readBooks?.map(e => <ReadingLogItem
-                        {...e}
-                        key={e.id}
-                        onUpdate={data => {
-                            const book = getBookId(books, data.text);
-                            if (book) dispatch(updateLog({ date, id: e.id, data: { book, read: data.read } }))
-                            else dispatch(updateLog({ date, id: e.id, data: { customName: data.text, read: data.read } }))
-                        }}
-                        onDelete={id => dispatch(removeLog({ date, id }))}
-                    />)}
-                    <AddNewLogItem onEntry={(name, read) => {
-                        const book = getBookId(books, name);
-                        
-                        dispatch(addLog(book ? { book, read: read || 0, date } : { customName: name, date, read: read || 0 }))
-                    }} />
+    return <> <TitleBar page="Diary" />
+        <div className={classes["container"]}>
+            <div className={classes["container-left"]}>
+                <div className={classes["datepicker"]}>
+                    <Datepicker date={{ ...date }} changed={changed} dateChanged={(date) => { setDate(date); history("/diary", { state: { date } }); }} />
                 </div>
-                <div className={classes["reading-log-info"]}>
-                    <div className={classes["reading-log-info-total"]}>{TotalRead}p.</div>
-                    <div className={classes["reading-log-info-remaining"]}>{(target - TotalRead > 0) ? (target - TotalRead) + "p. remaining" : ""}</div>
+                <div className={classes["reading-log"]}>
+                    <div className={classes["reading-log-items"]}>
+                        {log?.readBooks?.map(e => <ReadingLogItem
+                            {...e}
+                            key={e.id}
+                            onUpdate={data => {
+                                const book = getBookId(books, data.text);
+                                if (book) dispatch(updateLog({ date, id: e.id, data: { book, read: data.read } }))
+                                else dispatch(updateLog({ date, id: e.id, data: { customName: data.text, read: data.read } }))
+                            }}
+                            onDelete={id => dispatch(removeLog({ date, id }))}
+                        />)}
+                        <AddNewLogItem onEntry={(name, read) => {
+                            const book = getBookId(books, name);
+
+                            dispatch(addLog(book ? { book, read: read || 0, date } : { customName: name, date, read: read || 0 }))
+                        }} />
+                    </div>
+                    <div className={classes["reading-log-info"]}>
+                        <div className={classes["reading-log-info-total"]}>{TotalRead}p.</div>
+                        <div className={classes["reading-log-info-remaining"]}>{(target - TotalRead > 0) ? (target - TotalRead) + "p. remaining" : ""}</div>
+                    </div>
+                </div>
+                <div className={classes["diary-text"]}>
+                    <textarea value={diaryText} onChange={e => setDiaryText(e.currentTarget.value)} onBlur={e => { dispatch(updateDiaryText({ date, text: e.currentTarget.value })) }} />
                 </div>
             </div>
-            <div className={classes["diary-text"]}>
-                <textarea value={diaryText} onChange={e => setDiaryText(e.currentTarget.value)} onBlur={e => { dispatch(updateDiaryText({ date, text: e.currentTarget.value })) }} />
+            <div className={classes["container-right"]}>
+                <MonthOverview date={date} onClick={date => { setDate(date); setChanged(!changed); }} />
             </div>
         </div>
-        <div className={classes["container-right"]}>
-            <MonthOverview date={date} onClick={date => { setDate(date); setChanged(!changed); }} />
-        </div>
-    </div>
+    </>
 }
 
 export const getBookId = (books: Array<BookState>, text?: string) => {
-    
+
     const t = text?.toLowerCase() ?? "";
     return text === undefined ? "" : books.find(e => e.name.toLowerCase() === t || (e.name.toLowerCase() === t?.[0]))?.id;
 }

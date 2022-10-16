@@ -1,4 +1,4 @@
-import React, { FC, ForwardedRef, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { FC, ForwardedRef, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { BookState, RootState } from "../store";
@@ -7,13 +7,15 @@ import { move } from "../store/reducers/lists";
 import classes from "./styles/LogList.module.scss"
 import { createDateString } from "./util";
 import cn from "classnames"
+import TitleBar from "./TitleBar";
 
 const LogList: FC = () => {
     const headers = ["To Read", "Reading", "Read"];
     const [drag, setDrag] = useState<onDragType>();
     const lists = useSelector<RootState, Array<Array<BookState>>>(state => state.lists);
 
-    return <div className={classes["container"]}>
+    return <> <TitleBar page="Plan" />
+    <div className={classes["container"]}>
         {drag !== undefined && drag.point.x > 0 && <DragItem clickPoint={drag.point} size={drag.size} ><ListItem book={drag.book} key="drag" /></DragItem>}
         {lists.map((e, i) =>
             <List
@@ -22,8 +24,9 @@ const LogList: FC = () => {
                 logs={e}
                 drag={(drag) => setDrag(drag)}
                 dragItem={drag?.book}
-            />)}
+                />)}
     </div>
+                </>
 }
 const List: FC<{ logs: Array<BookState>, header: string, drag?: (drag?: onDragType) => void, dragItem?: BookState }> = props => {
     const dispatch = useDispatch();
@@ -61,10 +64,10 @@ const List: FC<{ logs: Array<BookState>, header: string, drag?: (drag?: onDragTy
         if (scroll !== 0) {
             interval = setInterval(() => {
                 console.log(scroll);
-                
+
                 if (wrapper.current)
-                wrapper.current.scrollTop += scroll;
-            },1)
+                    wrapper.current.scrollTop += scroll;
+            }, 1)
             return () => clearInterval(interval)
         } else clearInterval(interval)
     }, [scroll])
@@ -136,7 +139,7 @@ const List: FC<{ logs: Array<BookState>, header: string, drag?: (drag?: onDragTy
                         ((args) => {
                             console.log(wrapper.current?.scrollTop);
                             if (props.drag && args && wrapper.current)
-                            
+
                                 props.drag({
                                     ...args,
                                     point: { x: args.point.x - wrapper.current?.offsetLeft, y: args.point.y - wrapper.current.offsetTop + wrapper.current.scrollTop }
@@ -190,7 +193,7 @@ const ListItem = React.forwardRef<HTMLDivElement, { order?: number, book: BookSt
 
 type Point = { x: number, y: number }
 
-const DragItem: FC<{ clickPoint: Point, size: Point }> = props => {
+const DragItem: FC<{ children: ReactNode, clickPoint: Point, size: Point }> = props => {
     const item = useRef<HTMLDivElement>(null);
     const updatePoint = useCallback((e: MouseEvent): any => {
         if (item.current) {

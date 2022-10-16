@@ -8,6 +8,7 @@ import SummaryOverlay from "./SummaryOverlay"
 
 import { ReactComponent as AddButton } from "./styles/img/plus.svg";
 import { createDateString, FilterAlgorithm, splitAuthor } from "./util";
+import TitleBar from "./TitleBar";
 
 const SummariesPage: FC = (props): ReactElement => {
     const data = useSelector((state: RootState) => SummariesSelector(state));
@@ -18,7 +19,7 @@ const SummariesPage: FC = (props): ReactElement => {
     const [ratingFilter, setRatingFilter] = useState(0);
     const [selectedTags, setTags] = useState<string[]>([]);
     const [searchText, setSearchText] = useState("");
-    return <>
+    return <><TitleBar page="Summaries" />
         <div className={classes["container"]}>
             <div className={classes["summaries-container"]}>
                 <div className={classes["summaries-item-container"]}>
