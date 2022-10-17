@@ -1,5 +1,5 @@
-import React, { FC, ForwardedRef, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import React, { FC, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal, flushSync } from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { BookState, RootState } from "../store";
 import { move } from "../store/reducers/lists";
@@ -15,18 +15,18 @@ const LogList: FC = () => {
     const lists = useSelector<RootState, Array<Array<BookState>>>(state => state.lists);
 
     return <> <TitleBar page="Plan" />
-    <div className={classes["container"]}>
-        {drag !== undefined && drag.point.x > 0 && <DragItem clickPoint={drag.point} size={drag.size} ><ListItem book={drag.book} key="drag" /></DragItem>}
-        {lists.map((e, i) =>
-            <List
-                key={i}
-                header={headers[i]}
-                logs={e}
-                drag={(drag) => setDrag(drag)}
-                dragItem={drag?.book}
+        <div className={classes["container"]}>
+            {drag !== undefined && drag.point.x > 0 && <DragItem clickPoint={drag.point} size={drag.size} ><ListItem book={drag.book} key="drag" /></DragItem>}
+            {lists.map((e, i) =>
+                <List
+                    key={i}
+                    header={headers[i]}
+                    logs={e}
+                    drag={(drag) => setDrag(drag)}
+                    dragItem={drag?.book}
                 />)}
-    </div>
-                </>
+        </div>
+    </>
 }
 const List: FC<{ logs: Array<BookState>, header: string, drag?: (drag?: onDragType) => void, dragItem?: BookState }> = props => {
     const dispatch = useDispatch();
@@ -63,8 +63,6 @@ const List: FC<{ logs: Array<BookState>, header: string, drag?: (drag?: onDragTy
     useEffect(() => {
         if (scroll !== 0) {
             interval = setInterval(() => {
-                console.log(scroll);
-
                 if (wrapper.current)
                     wrapper.current.scrollTop += scroll;
             }, 1)
@@ -77,14 +75,14 @@ const List: FC<{ logs: Array<BookState>, header: string, drag?: (drag?: onDragTy
             if (items.length === 0) setOrder(0);
             for (let i = 0; i < items.length; i++) {
                 if (e.pageY <= wrapper.current.offsetTop ?? 0) {
-                    setOrder(0);
+                    flushSync(() => { setOrder(0); })
                     break;
                 }
                 else if (((e.pageY + wrapper.current.scrollTop) >= (((items[items.length - 1]?.offsetTop + wrapper.current.offsetTop) + items[items.length - 1]?.offsetHeight) ?? 0))) {
-                    setOrder(items.length);
+                    flushSync(() => { setOrder(items.length); })
                     break;
                 } else if (((e.pageY + wrapper.current.scrollTop) <= ((items[i].offsetTop + wrapper.current.offsetTop) + (items[i].offsetHeight / 2)))) {
-                    setOrder(i);
+                    flushSync(() => { setOrder(i); })
                     break;
                 }
             }
@@ -109,7 +107,7 @@ const List: FC<{ logs: Array<BookState>, header: string, drag?: (drag?: onDragTy
         onMouseMove={e => {
             if (props.dragItem) {
                 clearTimeout(timeOut);
-                timeOut = setTimeout(() => calculateOrder(e), 1);
+                timeOut = setTimeout(() => calculateOrder(e), 2);
             }
         }}
         onMouseLeave={() => { setOrder(-1); clearTimeout(timeOut) }}
@@ -137,7 +135,6 @@ const List: FC<{ logs: Array<BookState>, header: string, drag?: (drag?: onDragTy
                     hidden={e.id === props.dragItem?.id && order !== i}
                     drag={order !== i ?
                         ((args) => {
-                            console.log(wrapper.current?.scrollTop);
                             if (props.drag && args && wrapper.current)
 
                                 props.drag({
