@@ -25,6 +25,7 @@ import { generate } from "./store/DataGenerator"
 
 import TitleBar from './components/TitleBar';
 import LogList from './components/LogList';
+import SinglePage from './components/SinglePage';
 class App extends React.Component {
   render() {
     persistor.persist();
@@ -39,7 +40,7 @@ class App extends React.Component {
         <Router initialEntries={["/main"]}>
           <div className="App">
             <Routes>
-              <Route path="/main" element={<Main />}></Route>
+              <Route path="/main" element={<SinglePage />}></Route>
               <Route path="/plan" element={<LogList />}></Route>
               <Route path="/diary" element={<Diary />}></Route>
               <Route path="/settings" element={<Settings />}></Route>

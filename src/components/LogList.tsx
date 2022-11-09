@@ -2,7 +2,7 @@ import React, { FC, ReactNode, useCallback, useEffect, useMemo, useRef, useState
 import { createPortal, flushSync } from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { BookState, RootState } from "../store";
-import { move } from "../store/reducers/lists";
+import { addBook, move } from "../store/reducers/lists";
 
 import classes from "./styles/LogList.module.scss"
 import { createDateString } from "./util";
