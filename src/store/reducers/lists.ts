@@ -1,5 +1,4 @@
 import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
-import { listenerCancelled } from "@reduxjs/toolkit/dist/listenerMiddleware/exceptions";
 import { nanoid } from "nanoid";
 import { RDateType } from "../../class";
 
@@ -11,7 +10,8 @@ export type BookState = {
     pages?: number,
     list: number,
     finishDate?: RDateType
-    date?: RDateType
+    date?: RDateType,
+    note?: string
 }
 
 const ListsSlice = createSlice({
@@ -28,6 +28,14 @@ const ListsSlice = createSlice({
                 return { payload: { id: nanoid(), list, ...book } }
             }
         },
+        setNote(state, action: PayloadAction<{ bookId: string, text: string }>) {
+            const [list, index] = state.reduce((result, value, index) => {
+                const i = value.findIndex(e => e.id === action.payload.bookId);
+                if (i > 0) return [index, i];
+                else return result;
+            }, [0, 0])
+            if (state[list][index]) state[list][index].note = action.payload.text;
+        },
         updateBook(state, action: PayloadAction<BookState>) {
             const index = state[action.payload.list].findIndex(e => e.id === action.payload.id);
             state[action.payload.list][index] = { ...state[action.payload.list][index], ...action.payload }
@@ -37,7 +45,8 @@ const ListsSlice = createSlice({
             if (index > -1) state[action.payload.list].splice(index, 1);
         },
         move(state, action: PayloadAction<{ id: string, list: number, order?: number }>) {
-            if (Number(action.payload.order) !== NaN && action.payload.list <= 2 && action.payload.list >= 0 && (action.payload.order ?? -1) > -1) {
+
+            if (action.payload.list <= 2 && action.payload.list >= 0) {
                 let OldId = -1;
                 const oldList = state.findIndex(list =>
                     list.findIndex((item, index) => {
@@ -48,11 +57,14 @@ const ListsSlice = createSlice({
                     }) >= 0
                 )
                 const oldItem = state[oldList].splice(OldId, 1)[0];
-                state[action.payload.list].splice(action.payload.order!, 0, oldItem)
+                if (action.payload.order && Number(action.payload.order) !== NaN && action.payload.order > -1)
+                    state[action.payload.list].splice(action.payload.order!, 0, oldItem)
+                else
+                    state[action.payload.list].push(oldItem);
             }
         }
     }
 })
-export const { addBook, deleteBook, move, updateBook } = ListsSlice.actions;
+export const { addBook, deleteBook, move, updateBook, setNote } = ListsSlice.actions;
 
 export default ListsSlice.reducer;

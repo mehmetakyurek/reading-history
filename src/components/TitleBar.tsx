@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { FC, ReactElement, ReactNode } from "react"
 import { createPortal } from "react-dom"
 
 import classes from "./styles/TitleBar.module.scss"
@@ -10,9 +10,9 @@ import { ReactComponent as Close } from "./styles/img/Close.svg"
 import { Link } from "react-router-dom"
 
 
-const TitleBar: FC<{ page?: string, auth?: boolean }> = props => {
+const TitleBar: FC<{ page?: string, auth?: boolean, children?: ReactNode, className?: string }> = props => {
 
-    return createPortal(<div className={classes.TitleBar}>
+    return createPortal(<div className={cn(classes.TitleBar, props.className)}>
         <div className={classes.Buttons}>
 
             {props.page !== "Main" && props.page !== "Login" && <Link to="/main" className={classes.Back}><BackSvg /></Link>}
@@ -24,6 +24,9 @@ const TitleBar: FC<{ page?: string, auth?: boolean }> = props => {
                 <Link to="/summaries" className={cn(classes.Summaries, { [classes.Current]: props.page === "Summaries" })}>Summaries</Link>
             </>
             }
+        </div>
+        <div className="Content">
+            {props.children}
         </div>
         <div className={classes.AppButtons}>
             <div onClick={() => { window.electron.minimize() }}><Minimize /></div>

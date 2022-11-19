@@ -55,11 +55,28 @@ const DiarySlice = createSlice({
             reducer: (state, action: PayloadAction<DiaryField>) => { state.push(action.payload) },
             prepare: (data: Omit<DiaryField, "id">) => ({ payload: { id: nanoid(), ...data } })
         },
-        updateLog(state, action: PayloadAction<{ date: RDateType | string, id: string, data: { book?: string, read?: number, customName?: string } }>) {
-            const index = state.findIndex(e => dayPredicator(e, action.payload.date));
-            const log = state[index].readBooks.findIndex(e => e.id === action.payload.id);
-            if (action.payload.data.customName) state[index].readBooks[log].book = "";
-            if (index >= 0 && log >= 0) state[index].readBooks[log] = { ...state[index].readBooks[log], ...action.payload.data }
+        updateLog(state, action: PayloadAction<{ date: RDateType | string, id?: string, data: { book?: string, read?: number, customName?: string } }>) {
+            let index = state.findIndex(e => dayPredicator(e, action.payload.date));
+
+            if (index < 0 && typeof action.payload.date === "object" && action.payload.data.book && action.payload.data.read) {
+                state.push({
+                    date: action.payload.date,
+                    id: nanoid(),
+                    readBooks: [{ id: nanoid(), book: action.payload.data.book, read: action.payload.data.read }],
+                    text: ""
+                })
+            } else {
+                let log = state[index].readBooks.findIndex(e => e.id === action.payload.id || e.book === action.payload.data.book);
+                console.log(log);
+                console.log(action.payload);
+
+
+                if (action.payload.data.customName) state[index].readBooks[log].book = "";
+                if (log >= 0) state[index].readBooks[log] = { ...state[index].readBooks[log], ...action.payload.data }
+                else {
+                    state[index].readBooks.push({ id: nanoid(), read: 0, ...action.payload.data })
+                }
+            }
         },
         removeLog(state, action: PayloadAction<{ date: RDateType | string, id: string }>) {
             const log = state.findIndex(e => dayPredicator(e, action.payload.date));

@@ -7,10 +7,13 @@ a {
     z-index: 3000;
     -webkit-app-region: drag;
     grid-area: titlebar;
-    height: 30px;
+    max-height: 30px;
     width: 100%;
     background-color: #252525;
-    display: flex;
+    display: grid;
+    column-gap: 30px;
+    grid-template-columns: min-content minmax(0,min-content) min-content;
+    grid-template-rows: minmax(0,1fr);
     justify-content: space-between;
     user-select: none;
 
@@ -46,6 +49,9 @@ a {
                 height: 100%;
             }
         }
+    }
+    .Content {
+
     }
 
     .AppButtons {

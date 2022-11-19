@@ -24,19 +24,20 @@ const quotesSlice = createSlice({
     initialState: [] as QuoteField[],
     reducers: {
         addQuote: {
-            reducer: (state, action: PayloadAction<QuoteField>) => { state.push(action.payload) },
+            reducer: (state, action: PayloadAction<QuoteField>) => { state.unshift(action.payload) },
             prepare: (quote: Omit<QuoteField, "id">) => {
                 return { payload: { id: nanoid(), tags: getTags(quote.text), ...quote } }
             }
         },
         updateQuote(state, action: PayloadAction<{ id: string, text: string, book?: string, page?: number, customName?: string }>) {
             const logIndex = state.findIndex(e => e.id === action.payload.id);
+            console.log(action, state[logIndex].id);
 
             state[logIndex] = {
                 ...state[logIndex],
                 ...(action.payload.page && { page: action.payload.page }),
                 text: action.payload.text,
-                book: action.payload.book || undefined,
+                book: action.payload.book || state[logIndex].book,
                 customName: !action.payload.book ? action.payload.customName ?? undefined : undefined,
                 tags: getTags(action.payload.text)
             }

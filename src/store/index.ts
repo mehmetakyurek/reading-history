@@ -4,7 +4,8 @@ import DiarySlice from "./reducers/diary"
 import SummariesSlice from "./reducers/summaries"
 import QuotesSlice from "./reducers/quotes"
 import ListsSlice from "./reducers/lists"
-import { persistStore, persistReducer } from 'redux-persist'
+import temp from "./reducers/temp"
+import { persistStore, persistReducer, PersistConfig } from 'redux-persist'
 import { PersistorOptions } from "redux-persist/es/types"
 
 const RootReducer = combineReducers({
@@ -12,12 +13,14 @@ const RootReducer = combineReducers({
   diary: DiarySlice,
   summaries: SummariesSlice,
   quotes: QuotesSlice,
-  lists: ListsSlice
+  lists: ListsSlice,
+  temp: temp
 })
 
-const persistConfig = {
+const persistConfig: PersistConfig<RootState> = {
   key: 'root',
-  storage: window.electron.storage
+  storage: window.electron.storage,
+  blacklist: ['temp']
 }
 
 const persistedReducer = persistReducer(persistConfig, RootReducer) // Removed <any> type casting from RootReducer
