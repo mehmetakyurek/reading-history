@@ -17,7 +17,6 @@ export default class Login extends Component<PropsWithChildren<{}>, { val: strin
       fileExists: await window.electron.fileExists(),
       isEncrypted: await window.electron.isEncrypted()
     })
-
   }
 
   render() {

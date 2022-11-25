@@ -17,7 +17,7 @@ const YearOverview: FC<{ onSelect?: (date: RDateType) => void }> = (props) => {
         props.onSelect?.(new RDate(new Date(Number(e.currentTarget.getAttribute("data-date")))).Date)
     }, [props.onSelect]);
     
-    const target = useSelector<RootState, number>(state => state.main.target);
+    const target = useSelector<RootState, number>(state => state.prefs.dailyReadingTarget);
     const YearData = useSelector<RootState, YearData>(state => {
         const dateNow = new Date();
 

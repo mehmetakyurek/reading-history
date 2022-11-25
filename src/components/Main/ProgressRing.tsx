@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux"
 import { RootState } from "../../store"
-import { completedSelector } from "../../store/reducers/main"
 import classes from "./scss/Progressring.module.scss"
 
 type ProgressRingType = {
@@ -8,9 +7,8 @@ type ProgressRingType = {
 }
 // https://css-tricks.com/building-progress-ring-quickly/
 export default function ProgressRing(props: ProgressRingType) {
-    const target = useSelector((state: RootState) => state.main.target);
-    const completed = useSelector(completedSelector).length;
-    
+    const target = useSelector((state: RootState) => state.prefs.dailyReadingTarget);
+    const completed = useSelector((state: RootState) => state.lists[2].length);
     const circumference = (55 * 2 * Math.PI);
     const progress = ((completed / target) * 100);
 

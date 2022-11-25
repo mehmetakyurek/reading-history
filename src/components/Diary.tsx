@@ -17,7 +17,7 @@ const DiaryPage: FC = (props): ReactElement => {
     const [date, setDate] = useState<RDateType>(location.state?.date || new RDate().Date);
     const [diaryText, setDiaryText] = useState("");
     const dispatch = useDispatch();
-    const target = useSelector((state: RootState) => state.main.target);
+    const target = useSelector((state: RootState) => state.prefs.dailyReadingTarget);
     const books = useSelector((state: RootState) => state.lists.flat());
     const log = useSelector((state: RootState) => createSelector([
         (state: RootState) => state.lists.flat(),

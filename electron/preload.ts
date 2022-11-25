@@ -6,16 +6,21 @@ const storage = {
     setItem: (key: string, data: string): Promise<void> => ipcRenderer.invoke("setItem", key, data),
     removeItem: (key: string): Promise<void> => ipcRenderer.invoke("removeItem")
 }
+
+const { invoke, send } = ipcRenderer;
+
 const ContextBridgeApi = {
-    createUser: (pwd?: string): Promise<{ err: boolean }> => ipcRenderer.invoke("createUser", pwd),
-    login: (pwd?: string): Promise<boolean> => ipcRenderer.invoke("login", pwd),
-    fileExists: () => ipcRenderer.invoke("fileExists"),
-    isEncrypted: () => ipcRenderer.invoke("isEncrypted"),
-    close: () => ipcRenderer.send("close"),
-    minimize: () => ipcRenderer.send("minimize"),
-    minmax: () => ipcRenderer.send("minmax"),
-    restart: () => ipcRenderer.send("restart"),
-    deleteData: () => ipcRenderer.invoke("deleteData"),
+    createUser: (pwd?: string): Promise<{ err: boolean }> => invoke("createUser", pwd),
+    login: (pwd?: string): Promise<boolean> => invoke("login", pwd),
+    getDataPath: (): Promise<string> => invoke("getDataPath"),
+    moveFile: (): Promise<string> => invoke("moveFile"),
+    fileExists: () => invoke("fileExists"),
+    isEncrypted: () => invoke("isEncrypted"),
+    close: () => send("close"),
+    minimize: () => send("minimize"),
+    minmax: () => send("minmax"),
+    restart: () => send("restart"),
+    deleteData: () => invoke("deleteData"),
     storage,
 };
 

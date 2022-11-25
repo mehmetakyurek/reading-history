@@ -1,5 +1,4 @@
 import { combineReducers, createStore } from "@reduxjs/toolkit"
-import MainReducer, { } from "./reducers/main"
 import DiarySlice from "./reducers/diary"
 import SummariesSlice from "./reducers/summaries"
 import QuotesSlice from "./reducers/quotes"
@@ -7,14 +6,15 @@ import ListsSlice from "./reducers/lists"
 import temp from "./reducers/temp"
 import { persistStore, persistReducer, PersistConfig } from 'redux-persist'
 import { PersistorOptions } from "redux-persist/es/types"
+import prefSlice from "./reducers/preferences"
 
 const RootReducer = combineReducers({
-  main: MainReducer,
   diary: DiarySlice,
   summaries: SummariesSlice,
   quotes: QuotesSlice,
   lists: ListsSlice,
-  temp: temp
+  temp: temp,
+  prefs: prefSlice
 })
 
 const persistConfig: PersistConfig<RootState> = {

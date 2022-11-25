@@ -30,7 +30,7 @@ const temp = createSlice({
         },
         toggleBook(state, action: PayloadAction<string>) {
             const index = state.editList.indexOf(action.payload);
-            index > 0 ? state.editList.splice(index, 1) : state.editList.push(action.payload);
+            index >= 0 ? state.editList.splice(index, 1) : state.editList.push(action.payload);
         },
         setEditList(state, action: PayloadAction<Array<string>>) {
             state.editList = action.payload

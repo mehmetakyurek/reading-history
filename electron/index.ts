@@ -1,6 +1,7 @@
 import { BrowserWindow, app, ipcMain, globalShortcut, session } from "electron"
 import { Store } from "./store";
 import { homedir } from "os"
+import { existsSync } from "fs";
 let window: BrowserWindow;
 let store: Store;
 
@@ -8,7 +9,7 @@ Promise.all([app.whenReady(), Store.init()]).then((val) => {
     store = val[1];
     createWindow();
     globalShortcut.register('CommandOrControl+R', () => { })
-    if (!app.isPackaged) session.defaultSession.loadExtension(homedir() + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\4.24.0_0")
+    if (!app.isPackaged && existsSync(homedir() + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\4.24.0_0")) session.defaultSession.loadExtension(homedir() + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\4.24.0_0")
 })
 
 function createWindow() {
@@ -30,6 +31,8 @@ function createWindow() {
     ipcMain.on("minimize", () => { window.minimize() });
     ipcMain.on("minmax", () => { window.isMaximized() ? window.unmaximize() : window.maximize() });
     ipcMain.on("restart", () => { app.relaunch(); app.exit(0); });
+    ipcMain.handle("moveFile", () => store.moveSaveFile())
+    ipcMain.handle("getDataPath", () => store.filePath);
     ipcMain.handle("fileExists", () => store.fileExists())
     ipcMain.handle("isEncrypted", () => store.isEncrypted())
     ipcMain.handle("createUser", (_e, pwd) => store.createUser(pwd))

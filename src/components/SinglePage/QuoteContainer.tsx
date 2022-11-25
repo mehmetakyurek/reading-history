@@ -26,6 +26,7 @@ const Quotes: FC<{ book: string }> = props => {
 const Quote: FC<{ text: string, id: string }> = props => {
     const dispatch = useDispatch();
     const [val, setVal] = useState(props.text);
+    const spellcheck = useSelector((state: RootState) => state.prefs.spellcheck);
     const save = useCallback(() => {
         dispatch(updateQuote({
             id: props.id,
@@ -36,7 +37,7 @@ const Quote: FC<{ text: string, id: string }> = props => {
         className="basis-80 bg-neutral-800 px-4 py-5 rounded resize-none h-80 outline-none"
         value={val}
         onChange={e => setVal(e.currentTarget.value)}
-        spellCheck={false} onBlur={e => { save(); e.currentTarget.setAttribute("spellcheck", "false") }} onFocus={e => e.currentTarget.setAttribute("spellcheck", "true")} />
+        spellCheck={spellcheck} onBlur={e => { save(); e.currentTarget.setAttribute("spellcheck", "false") }} onFocus={e => e.currentTarget.setAttribute("spellcheck", spellcheck.toString())} />
 
 }
 const NewQuote: FC<{ book: string }> = (props) => {

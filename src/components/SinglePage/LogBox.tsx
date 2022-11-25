@@ -39,6 +39,7 @@ const List: FC = (props) => {
     const navigate = useNavigate();
     const [addValue, setAddValue] = useState("");
     const BookList = useSelector((state: RootState) => state.lists[1]);
+    const spellcheck = useSelector((state: RootState) => state.prefs.spellcheck);
     const Add = useCallback((e: string) => {
         if (e && e.length > 2) {
             dispatch(addBook({ name: addValue, list: 1 }));
@@ -49,6 +50,7 @@ const List: FC = (props) => {
         {BookList.map((book, index) => <Book key={book.id} book={book} index={index} selected={ids.includes(book.id)} />)}
         <div className='flex basis-full gap-3'>
             <input
+                spellCheck={spellcheck}
                 className='bg-transparent border rounded-sm border-border-color py-1 px-2.5 outline-none placeholder:text-disabled' type="text" placeholder="Add book..."
                 value={addValue} onChange={e => setAddValue(e.currentTarget.value)}
                 onKeyUp={e => e.key === "Enter" && Add(e.currentTarget.value)} onBlur={e => Add(e.currentTarget.value)} />

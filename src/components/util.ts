@@ -1,5 +1,4 @@
 import { RDateType } from "../class";
-import { BookList } from "../store/reducers/main";
 
 export function createDateString(date: RDateType): string {
     return date.date + "." + (date.month + 1) + "." + date.year

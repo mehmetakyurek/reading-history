@@ -8,6 +8,7 @@ const Note: FC<{ book: string }> = (props) => {
     const dispatch = useDispatch();
     const book = useSelector((state: RootState) => state.lists.flat().find(e => e.id === props.book));
     const [value, setValue] = useState(book?.note ?? "");
+    const spellcheck = useSelector((state: RootState) => state.prefs.spellcheck);
     useEffect(() => {
         setValue(book?.note ?? "");
     }, [book, setValue])
@@ -19,7 +20,7 @@ const Note: FC<{ book: string }> = (props) => {
     return <div className='p-4 h-full grid grid-rows-[auto,1fr]'>
         <div className='text-xl mb-4'>{book?.name}</div>
         <textarea className='resize-none w-full h-full bg-transparent outline-none' placeholder="Note...."
-            value={value} onChange={e => setValue(e.currentTarget.value)} spellCheck={false} onBlur={e => { save(); e.currentTarget.setAttribute("spellcheck", "false") }} onFocus={e => e.currentTarget.setAttribute("spellcheck", "true")} />
+            value={value} onChange={e => setValue(e.currentTarget.value)} spellCheck={spellcheck} onBlur={e => { save(); e.currentTarget.setAttribute("spellcheck", "false") }} onFocus={e => e.currentTarget.setAttribute("spellcheck", spellcheck.toString())} />
     </div>
 }
 
