@@ -47,7 +47,8 @@ const List: FC = (props) => {
         }
     }, [dispatch, addValue, setAddValue]);
     return <div className='LogList flex flex-wrap gap-5 place-content-evenly px-5'>
-        {BookList.map((book, index) => <Book key={book.id} book={book} index={index} selected={ids.includes(book.id)} />)}
+
+        {BookList.length > 0 ? BookList.map((book, index) => <Book key={book.id} book={book} index={index} selected={ids.includes(book.id)} />) : <span>Your reading list is empty.</span>}
         <div className='flex basis-full gap-3'>
             <input
                 spellCheck={spellcheck}
