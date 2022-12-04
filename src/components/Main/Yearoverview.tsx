@@ -1,10 +1,10 @@
 import React, { createRef, FC, ReactElement, useCallback, useState } from "react"
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { RDate, RDateType } from "../../class";
 import { RootState } from "../../store";
 import classes from "./scss/YearOverview.module.scss"
 import { createPortal } from "react-dom";
+import cn from "classnames"
 // 364 tane kutu oluşturuyor, yılın son günü 365' inciyi oluştaracak şekilde düzenlenecek.
 
 const YearOverview: FC<{ onSelect?: (date: RDateType) => void }> = (props) => {
@@ -12,17 +12,15 @@ const YearOverview: FC<{ onSelect?: (date: RDateType) => void }> = (props) => {
     const [hoverRead, setHoverRead] = useState(-1);
     const [hoverDate, setHoverDate] = useState("");
     let date = new Date();
-
+    const selected = useSelector((state: RootState) => state.temp.date);
     const handleClick: React.MouseEventHandler<HTMLDivElement> = useCallback((e) => {
         props.onSelect?.(new RDate(new Date(Number(e.currentTarget.getAttribute("data-date")))).Date)
     }, [props.onSelect]);
-    
+
     const target = useSelector<RootState, number>(state => state.prefs.dailyReadingTarget);
     const YearData = useSelector<RootState, YearData>(state => {
         const dateNow = new Date();
-
         const [date, month, year] = [dateNow.getDate(), dateNow.getMonth(), dateNow.getFullYear()]
-
         state.diary.filter(e => e.date.year === year);
         const dateCounter = new Date(year, 0, 1);
         const dataArray = [] as YearData
@@ -76,6 +74,7 @@ const YearOverview: FC<{ onSelect?: (date: RDateType) => void }> = (props) => {
                             {...daydata}
                             key={daydata.date.toLocaleDateString()}
                             target={target}
+                            selected={RDate.isEqual(new RDate(daydata.date).Date, selected)}
                         />)}
                 </div>
             </div>
@@ -90,17 +89,20 @@ const YearDataDayBox: FC<{
     target: number,
     onMouseEnter?: (e: React.MouseEvent, read: number, date: string) => void,
     onMouseLeave?: React.MouseEventHandler<HTMLDivElement>,
-    onClick?: React.MouseEventHandler<HTMLDivElement>
+    onClick?: React.MouseEventHandler<HTMLDivElement>,
+    selected?: boolean
 }> = (props): ReactElement => {
-    const history = useNavigate();
     return <div
+        className={cn(classes["year-overview-data-day"] + ((props?.future) ? (" " + classes["blank"]) : ""),
+            {
+                'border-2 border-rock-100': props.selected
+            })}
         onMouseEnter={e => props.onMouseEnter?.(e, props.read ?? 0, props.date.getDate() + "." + (props.date.getMonth() + 1))}
         onMouseLeave={props.onMouseLeave}
         onClick={props.onClick}
         data-date={props.date.getTime()}
         style={{ backgroundColor: "var(--color-level-" + Math.min(Math.round(((props.read ?? 1) / props.target) * 5), 5) + ")" }
-        }
-        className={classes["year-overview-data-day"] + ((props?.future) ? (" " + classes["blank"]) : "")} >
+        }>
     </div >
 }
 
