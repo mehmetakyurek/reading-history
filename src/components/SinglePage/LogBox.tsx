@@ -16,7 +16,7 @@ import { setContent, setDate, setEditList, toggleBook } from "../../store/reduce
 
 const LogBox: FC = (props) => {
     const date = useSelector((state: RootState) => state.temp.date);
-    const books = useSelector((state: RootState) => state.diary.find(e => RDate.isEqual(e.date, date))?.readBooks.map(b => b.book ?? ""));
+    const books = useSelector((state: RootState) => state.diary.find(e => RDate.isEqual(e.date, date))?.readBooks.map(b => (b.read > 0 && b.book ? b.book : "")));
     const ids = useSelector((state: RootState) => state.temp.editList);
     const dispatch = useDispatch();
     useEffect(() => {

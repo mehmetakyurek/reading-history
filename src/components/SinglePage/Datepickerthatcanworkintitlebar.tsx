@@ -32,11 +32,11 @@ const DatePicker: FC<{ onChange?: (date: RDateType) => void, onClick?: React.Mou
                     e.deltaY > 0 ? shown.month === 11 ? { year: shown.year + 1, month: 0 } : { ...shown, month: shown.month + 1 } : { ...shown }
             )
         }}>
-            <div className="group relative">
+            <div className="group relative text-text">
                 {shown.year}
                 <Years year={shown.year} onChange={y => setShown({ ...shown, year: y })} />
             </div>
-            <div className="group relative w-16 text-center">
+            <div className="group relative w-16 text-center text-text">
                 {months[shown.month]}
                 <Months month={shown.month} onchange={m => setShown({ ...shown, month: m })} />
             </div>
@@ -78,7 +78,7 @@ const Days: FC<{ shown: Omit<RDateType, 'date'>, last: number, onClick?: (date: 
 }
 
 const HoverContainer: FC<{ children: ReactNode, onLg?: boolean }> = props => {
-    return <div className="py-2 left-2/4 -translate-x-2/4 bg-rock-400 group-hover:flex flex-col absolute hidden gap-1 shadow-[0_0px_10px_5px] rounded-sm shadow-rock-400/80 top-full">
+    return <div className=" text-disabled py-2 left-2/4 -translate-x-2/4 bg-rock-400 group-hover:flex flex-col absolute hidden gap-1 shadow-[0_0px_10px_5px] rounded-sm shadow-rock-400/80 top-full">
         {props.children}
     </div>
 }
@@ -93,8 +93,8 @@ const DateItem: FC<{ date: number, present?: boolean, onClick?: (date: number) =
         className={cn(
             'hover:bg-slate-700 text-center w-7 rounded cursor-pointer lg:block',
             {
-                'text-text': props.present,
-                'lg:left-0 underline block underline-offset-4': props.selected,
+                'underline underline-offset-4': props.present,
+                'lg:left-0 block text-text': props.selected,
                 'hidden': !selectedDate
             })}>
         {props.date < 0 ? Math.abs(props.date) : props.date}
