@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer } from "react";
 import { RDate, RDateType } from "../../class";
 import TitleBar from "../TitleBar";
-import LogBox from "./LogBox";
+import DailyEntry from "./LogBox";
 import Quotes from "./QuoteContainer";
 import { ReactComponent as LogoutIcon } from "../styles/img/logout.svg"
 import { ReactComponent as SettingsIcon } from "../styles/img/settings.svg"
@@ -17,8 +17,8 @@ export default function () {
     return <>
         <TitleBar page="Main" className="bg-rock-400"><DatePicker /></TitleBar>
         <div className="grid grid-cols-[minmax(500px,.6fr)_1fr] grid-rows-1 overflow-hidden h-full bg-rock-200">
-            <div className='MainContainer min-w-min bg-rock-300 pt-7 font-[Nunito] text-sm z-10'>
-                <LogBox />
+            <div className='Left min-w-min bg-rock-300 pt-7 font-[Nunito] text-sm z-10'>
+                <DailyEntry />
             </div>
             <div className="z-0">
                 {content.view === "quotes" && <Quotes book={content.id} />}

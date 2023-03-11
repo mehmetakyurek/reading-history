@@ -4,7 +4,7 @@ import { useSelector } from "react-redux"
 import { useNavigate } from "react-router";
 import { generate } from "../store/DataGenerator";
 import store, { RootState } from "../store/index"
-import { setDailyReadingTarget, setSpellcheck } from "../store/reducers/preferences";
+import { setDailyReadingTarget, setSpellcheck, setSelectType } from "../store/reducers/preferences";
 
 
 import classes from "./styles/Settings.module.scss"
@@ -28,6 +28,13 @@ export default function SettingsPage() {
             </div>
             <div>
                 Spellcheck: <input type={'checkbox'} checked={prefs.spellcheck} onChange={e => dispatch(setSpellcheck(!prefs.spellcheck))} />
+            </div>
+            <div>
+                Select type:
+                <select name="select type" id="stype" onChange={e => dispatch(setSelectType((e.currentTarget.value as 'list' | 'range')))}>
+                    <option value="range" selected={prefs.selectType === 'range'}>Range</option>
+                    <option value="list" selected={prefs.selectType === "list"}>List</option>
+                </select>
             </div>
             <button onClick={() => {
                 generate();

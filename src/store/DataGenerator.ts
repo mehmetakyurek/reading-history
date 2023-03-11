@@ -84,7 +84,7 @@ const generateQuote = (store: RootState): Omit<QuoteField, "id"> => {
 export const CreateDiaryLog = () => {
     return new Promise(res => {
         const year = new Date().getFullYear();
-        const d = new Date(year, 11, 1);
+        const d = new Date(year, 0, 1);
         while (d.getFullYear() !== year + 1) {
             generateDiary(new RDate(d).Date);
             d.setDate(d.getDate() + 1);
