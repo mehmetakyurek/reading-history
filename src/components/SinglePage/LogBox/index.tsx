@@ -1,19 +1,20 @@
 import { useSelector } from "react-redux"
 import { flushSync } from "react-dom"
 import cn from "classnames"
-import store, { BookState, RootState } from "../../store"
+import store, { BookState, RootState } from "../../../store"
 import { useDispatch } from "react-redux"
 import React, { FC, ReactElement, ReactNode, useCallback, useEffect, useMemo, useState } from "react"
-import { ReactComponent as QuotesSvg } from "../styles/img/quotes.svg"
-import { ReactComponent as SummariesSvg } from "../styles/img/summaries.svg"
-import { ReactComponent as DoneSvg } from "./styles/done.svg"
-import "./styles/LogBox.css"
-import { RDate, RDateType } from "../../class"
-import { addBook, move, setNote } from "../../store/reducers/lists"
-import { updateLog } from "../../store/reducers/diary"
+import { ReactComponent as QuotesSvg } from "../../styles/img/quotes.svg"
+import { ReactComponent as SummariesSvg } from "../../styles/img/summaries.svg"
+import { ReactComponent as DoneSvg } from "../styles/done.svg"
+import "../styles/LogBox.css"
+import { RDate, RDateType } from "../../../class"
+import { addBook, move, setNote } from "../../../store/reducers/lists"
+import { updateLog } from "../../../store/reducers/diary"
 import { useNavigate } from "react-router-dom"
-import { setContent, setDate, setEditList, toggleBook } from "../../store/reducers/temp"
+import { setContent, setDate, setEditList, toggleBook } from "../../../store/reducers/temp"
 import { log } from "console"
+import { NewBookInput } from "./NewBookInput"
 
 //Left Side
 const DailyEntry: FC = (props) => {
@@ -41,68 +42,7 @@ const ReadingBooksList: FC = (props) => {
     return <div className='LogList flex flex-wrap gap-5 place-content-evenly px-5'>
 
         {BookList.length > 0 ? BookList.map((book, index) => <ReadingBookListItem key={book.id} book={book} index={index} selected={listedOnDailyLogIds.includes(book.id)} />) : <span>Your reading list is empty.</span>}
-        <NewEntryInput />
-    </div>
-}
-const NewEntryInput: FC = props => {
-    const spellcheck = useSelector((state: RootState) => state.prefs.spellcheck);
-    const [val, setVaL] = useState("");
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const [searchText, setSearchText] = useState("");
-    const Add = useCallback((e: string) => {
-        if (e && e.length > 2) {
-            dispatch(addBook({ name: val, list: 1 }));
-            setVaL("");
-        }
-    }, [dispatch, val, setVaL]);
-
-    useEffect(() => {
-        clearTimeout(timeOut);
-        timeOut = setTimeout(() => { setSearchText(val) }, 1000);
-    }, [setSearchText, timeOut, val])
-    const onSelect = useCallback((text: string) => {
-        setVaL(text);
-        setSearchText("")
-    }, [setVaL, setSearchText])
-    return <div className='flex basis-full gap-3 relative'>
-        <input
-            spellCheck={spellcheck}
-            className='bg-transparent border rounded-sm border-border-color py-1 px-2.5 outline-none placeholder:text-disabled' type="text" placeholder="Add book..."
-            value={val} onChange={e => setVaL(e.currentTarget.value)}
-            onKeyUp={e => e.key === "Enter" && Add(e.currentTarget.value)} /* onBlur={e => Add(e.currentTarget.value)} */ />
-        <Button className="w-7 hover:bg-gray-800" onClick={e => navigate("/plan")} />
-        <RecommendationList q={searchText} onSelect={onSelect} />
-    </div>
-}
-
-const RecommendationList: FC<{ q: string, onSelect: (text: string) => void }> = props => {
-    const [result, setResult] = useState<any>();
-    useEffect(() => {
-        if (props.q.length > 5)
-            fetch("https://openlibrary.org/search.json?q=title%3A+\"" + encodeURI(props.q) + "\"").then(val => {
-                val.json().then(json => setResult(json.docs));
-            });
-        else setResult(undefined);
-    }, [props.q])
-    const Click: React.MouseEventHandler<HTMLDivElement> = useCallback((e) => {
-        let target = (e.target as HTMLElement);
-        if (target.tagName !== 'DIV') target = (target.parentElement as HTMLDivElement);
-        props.onSelect(target.getAttribute('data-name') || "");
-    }, [])
-    return <div className="absolute top-full flex flex-col w-80 rounded" onClick={Click} >
-        {result?.map((r: any) =>
-            <SearchResultItem item={r} />
-        )}
-    </div>
-}
-
-const SearchResultItem: FC<{ item: any }> = props => {
-    return <div data-name={props.item.title} className="p-2 bg-rock-200 w-full h-fit flex items-center hover:bg-rock-400">
-        <img src={"https://covers.openlibrary.org/b/id/" + props.item.cover_i + "-S.jpg"} alt="" />
-        <span className="ml-2">
-            {props.item.title}
-        </span>
+        <NewBookInput />
     </div>
 }
 
@@ -211,7 +151,7 @@ const HistoryOfBook: FC<{ date: RDateType, bookId: string, onChange?: (date: RDa
     </div>
 }
 
-const Button: FC<{ className?: string, onClick?: React.MouseEventHandler<HTMLDivElement> }> = (props) => {
+export const Button: FC<{ className?: string, onClick?: React.MouseEventHandler<HTMLDivElement> }> = (props) => {
     return <div className={cn('button grid grid-cols-3 gap-0.5 items-center', props.className)} onClick={props.onClick}>
         <div className='aspect-square bg-slate-600 rounded-full'></div>
         <div className='aspect-square bg-slate-600 rounded-full'></div>
