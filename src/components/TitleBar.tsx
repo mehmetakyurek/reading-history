@@ -15,7 +15,7 @@ const TitleBar: FC<{ page?: string, auth?: boolean, children?: ReactNode, classN
     return createPortal(<div className={cn(classes.TitleBar, props.className)}>
         <div className={classes.Buttons}>
 
-            {props.page !== "Main" && props.page !== "Login" && <Link to="/main" className={classes.Back}><BackSvg /></Link>}
+            {props.page !== "Main" && props.page !== "Login" && <Link to="/main" className={classes.Back + " fill-text-header"}><BackSvg /></Link>}
 
             {props.page !== "Main" && props.page !== "Login" && <>
                 <Link to="/plan" className={cn(classes.Plan, { [classes.Current]: props.page === "Plan" })}>Plan</Link>

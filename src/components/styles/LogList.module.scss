@@ -47,6 +47,7 @@
     background-color: #1a1d24;
     border-radius: 4px;
     transition: top 200ms;
+    user-select: none;
     .book-name {
         overflow: hidden;
         text-overflow: ellipsis;

@@ -4,19 +4,12 @@ import { useSelector } from "react-redux";
 import { RDate } from "../../class";
 import { RootState } from "../../store";
 import { addQuote, updateQuote } from "../../store/reducers/quotes";
-import { setContent } from "../../store/reducers/temp";
-
-import { ReactComponent as CancelButton } from "../styles/img/Close.svg";
 
 const Quotes: FC<{ book: string }> = props => {
     const quotes = useSelector((state: RootState) => state.quotes.filter(e => e.book === props.book));
     const book = useSelector((state: RootState) => state.lists.flat().find(e => e.id === props.book));
-    const dispatch = useDispatch();
-
     return <div className="grid grid-rows-[auto_minmax(0,1fr)] h-full">
-        <div className="relative header text-center py-2">{book?.name} <div className="absolute right-3 top-3 w-3 h-3" onClick={() => {
-            dispatch(setContent({ view: 'main' }));
-        }}><CancelButton /></div></div>
+        <div className="relative header text-center py-2">{book?.name} </div>
         <div className="flex flex-wrap gap-5 overflow-auto justify-center box-border mx-2.5 mt-2.5 pb-2.5">
             <NewQuote book={props.book} />{quotes.map(quote => <Quote key={quote.id} text={quote.text} id={quote.id} />)}
         </div>
