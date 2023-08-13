@@ -8,6 +8,7 @@ import classes from "./styles/LogList.module.scss"
 import { createDateString } from "./util";
 import cn from "classnames"
 import TitleBar from "./TitleBar";
+import { log } from "console";
 
 const LogList: FC = () => {
     const headers = ["To Read", "Reading", "Read"];

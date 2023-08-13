@@ -60,7 +60,7 @@ const BookEntry: FC<{ id: string }> = (props) => {
     const book = useSelector((state: RootState) => {
         return state.lists[1].find(e => e.id === props.id)
     });
-    const [target, setTarget] = useState(30);
+    const target = useSelector((state: RootState) => state.prefs.dailyReadingTarget);
     const [min, setMin] = useState(0);
     const [max, setMax] = useState(200);
     const current = useSelector((state: RootState) => state.diary.find(e => RDate.isEqual(e.date, date))?.readBooks.find(e => e.book === book?.id)?.read ?? 0)
