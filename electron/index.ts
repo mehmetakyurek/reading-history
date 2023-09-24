@@ -9,7 +9,7 @@ Promise.all([app.whenReady(), Store.init()]).then((val) => {
     store = val[1];
     createWindow();
     globalShortcut.register('CommandOrControl+R', () => { })
-    if (!app.isPackaged && existsSync(homedir() + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\4.24.0_0")) session.defaultSession.loadExtension(homedir() + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\4.24.0_0")
+    if (!app.isPackaged && existsSync(homedir() + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\4.28.0_0")) session.defaultSession.loadExtension(homedir() + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\4.28.0_0")
 })
 
 function createWindow() {
