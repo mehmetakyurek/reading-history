@@ -3,6 +3,8 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-rows: 100%;
     height: 100%;
+    font-family: Nunito;
+    font-size: 14px;
 }
 
 .list::-webkit-scrollbar {
@@ -23,7 +25,7 @@
         margin-top: 16px;
         padding: 0 10px;
         row-gap: 16px;
-        overflow: auto;
+        overflow: none;
         position: relative;
 
         .list-item.preview {
@@ -48,17 +50,7 @@
     border-radius: 4px;
     transition: top 200ms;
     user-select: none;
-    .book-name {
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    .dates {
-        padding: 0 20px 0 10px;
-    }
-    .buttons {
-        text-align: right;
-        cursor: pointer;
-    }
+    
 }
 .drag-item {
     position: absolute;

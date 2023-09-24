@@ -10,6 +10,8 @@ import cn from "classnames"
 import TitleBar from "./TitleBar";
 import { log } from "console";
 
+import { ReactComponent as DeleteIcon } from "./styles/img/delete.svg"
+import { ReactComponent as EditIcon } from "./styles/img/edit.svg"
 const LogList: FC = () => {
     const headers = ["To Read", "Reading", "Read"];
     const [drag, setDrag] = useState<onDragType>();
@@ -153,7 +155,14 @@ type onDragType = { book: BookState, point: Point, size: Point }
 
 const ListItem = React.forwardRef<HTMLDivElement, { order?: number, book: BookState, drag?: (drag?: onDragType) => void, hidden?: boolean, preview?: boolean }>((props, ref) => {
     let timeout: NodeJS.Timeout;
-    return <div ref={ref} data-order={props.order} className={cn(classes["list-item"], { [classes["preview"]]: props.preview, [classes["hidden"]]: props.hidden })}
+    return <div
+        ref={ref}
+        data-order={props.order}
+        className={cn(
+            classes["list-item"],
+            { [classes["preview"]]: props.preview, [classes["hidden"]]: props.hidden },
+            "group z-1"
+        )}
         style={{ display: props.hidden ? "none" : "" }}
 
         onMouseDown={ev => {
@@ -173,17 +182,28 @@ const ListItem = React.forwardRef<HTMLDivElement, { order?: number, book: BookSt
                 }
             }, 100)
         }} onMouseUp={() => { clearTimeout(timeout); props.drag?.(); }}>
-        <div className={classes["book"]}>
-            <div className={classes["book-name"]}>{props.book.name}</div>
-            <div className={classes["book-page"]}>{props.book.pages ?? "0"}</div>
+        <div className={classes["book"] + " text-sm"}>
+            <div className="overflow-hidden text-ellipsis">{props.book.name}</div>
+            <div className="text-text-disabled ">{props.book.pages ?? "0"}</div>
         </div>
-        <div className={classes["dates"]}>
+        <div className="pr-5 pl-2.5">
             <div className={classes["date-start"]}>{props.book.date ? createDateString(props.book.date) : ""}</div>
             <div className={classes["date-end"]}>{props.book.finishDate ? createDateString(props.book.finishDate) : ""}</div>
         </div>
-        <div className={classes["buttons"]}>
+        <div className="text-right cursor-pointer">
             <div className={classes["quotes"]}>Quotes</div>
             <div className={classes["note"]}>Edit Note</div>
+        </div>
+        <div className="
+            absolute
+            transition-transform -translate-x-5 group-hover:translate-x-0 left-full duration-100 -z-100
+            px-1 f h-full 
+            flex justify-evenly flex-col 
+            invisible group-hover:visible hover:visible
+            -z-1
+        ">
+            <div className="w-[2em] h-[2em]"><DeleteIcon className="w-[2em] h-[2em] fill-red-700 translate-y-4 group-hover:translate-y-0 transition-all opacity-0 group-hover:opacity-100" /></div>
+            <div className="w-[2em] h-[2em]"><EditIcon className="w-[2em] h-[2em] fill-rock-100 -translate-y-4 group-hover:translate-y-0 transition-all opacity-0 group-hover:opacity-100" /></div>
         </div>
     </div>;
 })
