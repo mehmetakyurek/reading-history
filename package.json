@@ -14,7 +14,6 @@
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.2",
-    "react-scripts": "5.0.1",
     "redux": "^4.2.0",
     "redux-persist": "^6.0.0",
     "sass": "^1.43.4",
@@ -22,12 +21,11 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "cross-env BROWSER=none react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "cross-env BROWSER=none vite",
+    "build": "vite build",
     "electron": "npm run electron-build && electron electron/build/index.js",
-    "electron-build": "tsc -p electron/tsconfig.json"
+    "electron-build": "tsc -p electron/tsconfig.json",
+    "dev": "vite"
   },
   "eslintConfig": {
     "extends": [
@@ -49,6 +47,8 @@
     ]
   },
   "devDependencies": {
+    "@svgr/core": "^8.1.0",
+    "@svgr/plugin-jsx": "^8.1.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -56,18 +56,21 @@
     "@types/faker": "^5.1.7",
     "@types/jest": "^26.0.15",
     "@types/nanoid": "^2.1.0",
-    "@types/node": "^16.11.7",
+    "@types/node": "^20.9.1",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "@types/react-redux": "^7.1.24",
     "@types/react-router-dom": "^5.3.3",
     "@types/redux-persist": "^4.3.1",
+    "@vitejs/plugin-react": "^4.2.0",
     "autoprefixer": "^10.4.13",
     "electron": "^21.1.1",
     "postcss": "^8.4.18",
     "redux-devtools-extension": "^2.13.9",
     "tailwindcss": "^3.3.2",
-    "typescript": "^4.4.4"
+    "typescript": "^4.4.4",
+    "vite": "^5.0.0",
+    "vite-tsconfig-paths": "^3.5.0"
   },
   "build": {
     "appId": "com.akyurek.readinghistory",

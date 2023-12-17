@@ -1,7 +1,7 @@
 import classes from "./styles/Datepicker.module.scss";
 import { FC, ReactElement, useEffect, useState } from "react"
 
-import { getMonths, getWeekDays } from "../index"
+import { getMonths, getWeekDays } from "./util"
 import { RDateType } from "../class";
 import { getFirstDay, getPrevLastDate } from "./util";
 
