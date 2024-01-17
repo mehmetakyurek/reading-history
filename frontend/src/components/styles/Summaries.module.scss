@@ -1,0 +1,230 @@
+.container {
+    background: url(./img/bookbg.png) no-repeat;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 368px;
+}
+
+.summaries-container {
+    display: flex;
+    justify-content: center;
+
+    box-sizing: border-box;
+    padding: 50px 0;
+    margin-bottom: 20px;
+    font-family: Nunito;
+    max-height: 100%;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        width: 3px;
+        background-color: #212121;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #d0d0d0;
+    }
+
+    .summaries-item-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: flex-start;
+        gap: 20px;
+        max-width: 1230px;
+        position: relative;
+
+        .add-summary-button {
+            position: absolute;
+
+            width: 50px;
+            height: 50px;
+            right: 0px;
+            top: 0px;
+            cursor: pointer;
+
+            &:hover svg {
+                fill: #2778be;
+            }
+
+            svg {
+                fill: #4796db;
+
+                width: 50px;
+                height: 50px;
+            }
+
+            border-radius: 50%;
+        }
+
+        .summaries-item {
+            display: grid;
+            width: 392px;
+            grid-template-columns: minmax(0,1fr) 124px;
+            grid-template-rows: auto auto;
+            padding: 10px 7px 10px 15px;
+
+            cursor: pointer;
+            user-select: none;
+            background-color: #1A1B20;
+            border-radius: 3px;
+
+            .book-name {
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                font-size: 18px;
+                color: #d0d0d0;
+            }
+
+            .book-rating {
+                display: flex;
+                justify-content: flex-end;
+                column-gap: 5px;
+
+                .book-rating-star {
+                    height: 20px;
+                    width: 20px;
+                    background-image: url(./img/star.svg);
+                    background-size: cover;
+                }
+            }
+
+            .book-date, 
+            .book-rating {
+                text-align: right;
+            }
+
+            .book-date, 
+            .book-author {
+                color: #6B6B6B;
+            }
+        }
+    }
+}
+
+.summary-overlay-container {
+    position: absolute;
+    top: 0;
+    z-index: 999;
+    display: grid;
+    grid-template-columns: 392px auto;
+    align-items: stretch;
+    width: 100%;
+    height: 100%;
+    background-color: #2A2D37;
+
+    &>div {
+        height: 100%;
+        background-color: #1A1B20;
+    }
+
+    .summary-overlay-left {
+        display: grid;
+        grid-template-rows: 1.2fr 1fr;
+        justify-content: center;
+
+        position: relative;
+
+        &:hover .delete-summary-button {
+            opacity: 1;
+        }
+
+        .delete-summary-button {
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            bottom: 10px;
+            right: 10px;
+
+            background-image: url(img/trash.svg);
+            background-size: cover;
+            opacity: 0;
+            transition: opacity 150ms;
+            cursor: pointer;
+        }
+
+        .summary-overlay-book {
+            position: relative;
+            align-self: flex-end;
+            cursor: pointer;
+
+            &>div {
+                font-family: Nunito;
+                text-align: center;
+            }
+
+            input {
+                font-size: 25px;
+                color: #d0d0d0;
+                font-family: Nunito;
+                text-align: center;
+                background-color: transparent;
+                border: none;
+                outline: none;
+                caret-color: #d0d0d0;
+                color: #d0d0d0;
+                width: 100%;
+            }
+
+        }
+
+        .summary-overlay-bottom {
+            display: grid;
+            justify-content: center;
+
+            .summary-overlay-buttons {
+                display: flex;
+                flex-direction: row;
+
+                &>div {
+                    &:first-child {
+                        margin-right: 25px;
+                    }
+
+                    width: 35px;
+                    height: 35px;
+                    cursor: pointer;
+                }
+
+                align-self: flex-end;
+
+                .check svg {
+                    fill: #245071;
+                }
+
+                svg {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+
+            .summary-overlay-page {
+                align-self: flex-end;
+                justify-self: center;
+                margin-bottom: 13px;
+                color: #a2a2a2;
+                font-family: Nunito;
+            }
+        }
+    }
+
+    .summary-overlay-right {
+        width: 100%;
+        max-width: 1172px;
+        justify-self: center;
+        padding: 50px 69px;
+        box-sizing: border-box;
+
+        textarea {
+            font: 16px Nunito;
+            width: 100%;
+            height: 100%;
+            resize: none;
+            border: none;
+            padding: 5px;
+            background: transparent;
+            color: #d0d0d0;
+        }
+    }
+}

@@ -1,0 +1,29 @@
+.navigation-bar {
+    position: absolute;
+    width: 60px;
+    top: 0;
+    left: -53px;
+    height: 100%;
+    background: url(./img/back.svg) center / 70% no-repeat #1E2330;
+    box-shadow: 3px 0px 6px #1E2330;
+    transition: 150ms left;
+    cursor: pointer;
+    z-index: 9999;
+    &:hover {
+        left: 0;
+    }
+    & .navigation-bar-icon-container {
+        & a { 
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0px;
+            &:hover {
+                background-color: #1A1B20;
+            }
+        }
+        position: absolute;
+        top: 30px;
+        width: 100%;
+    }
+}
