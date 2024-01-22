@@ -1,20 +1,24 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 type decoder struct {
 	cursor int
 	data   []byte
 }
 
-func (d *decoder) getnBytes(n int) []byte {
+func (d *decoder) getnBytes(n int) *[]byte {
 
 	if n > 0 && len(d.data) >= d.cursor+n {
-		returnValue := d.data[d.cursor : d.cursor+n]
+		returnVal := d.data[d.cursor : d.cursor+n]
 		d.cursor += n
-		return returnValue
+		return &returnVal
 	}
-	return d.data[d.cursor:]
+	returnVal := d.data[d.cursor:]
+	return &returnVal
 }
 
 func NewDecoder(data []byte) (decoder, error) {
@@ -26,6 +30,6 @@ func NewDecoder(data []byte) (decoder, error) {
 		}, nil
 	} else {
 		fmt.Println(len(data))
-		return decoder{}, Error{message: "data length is too short"}
+		return decoder{}, errors.New("Data length is too short")
 	}
 }

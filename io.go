@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/rand"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -23,13 +24,13 @@ type File struct {
 
 type encrypted struct {
 	nonce []byte
-	data  []byte
+	data  *[]byte
 }
 
 type dataFields struct {
 	EncryptionKey encrypted
 	Data          encrypted
-	pwdHash       []byte
+	pwdHash       *[]byte
 	plain         string
 }
 
@@ -42,7 +43,7 @@ func (f *File) init() {
 		if err != nil {
 			fmt.Println(err.Error())
 		}
-		decoded, err := decodeData(contents)
+		decoded, err := decodeData(&contents)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -81,15 +82,17 @@ func (f *File) CreateUser(pwd string) (bool, error) {
 		if err != nil {
 			return false, err
 		}
-
-		encryptedKey, nonce := Encrypt(hashKey, string(key))
-		encryptedData, dataNonce := Encrypt(key, "{}")
+		keystr := string(key)
+		defaultData := "{}"
+		encryptedKey, nonce := Encrypt(&hashKey, &keystr)
+		encryptedData, dataNonce := Encrypt(&key, &defaultData)
 		pwdHash, err := GetHash(string(hashKey), salt)
 		if err != nil {
 			return false, err
 		}
+		encodedPwd := pwdHash.Encode()
 		f.data = dataFields{
-			pwdHash:       pwdHash.Encode(),
+			pwdHash:       &encodedPwd,
 			EncryptionKey: encrypted{nonce, encryptedKey},
 			Data:          encrypted{dataNonce, encryptedData},
 		}
@@ -109,11 +112,11 @@ func (f *File) Write() error {
 func (f *File) Auth(pwd string) bool {
 	if f.exists() {
 		if !f.encrypted {
-			f.data.plain = string(f.Read())
+			f.data.plain = string(*f.Read())
 			return true
 		}
 
-		raw, err := argon2.Decode(f.data.pwdHash)
+		raw, err := argon2.Decode(*f.data.pwdHash)
 		if err != nil {
 			return false
 		}
@@ -122,31 +125,31 @@ func (f *File) Auth(pwd string) bool {
 		if err != nil {
 			return false
 		}
-		match, err := argon2.VerifyEncoded(pwdHash.Hash, f.data.pwdHash)
+		match, err := argon2.VerifyEncoded(pwdHash.Hash, *f.data.pwdHash)
 		if !match || err != nil {
 			return false
 		}
 		fmt.Println(match)
-		f.key = ([]byte(Decrypt(pwdHash.Hash, f.data.EncryptionKey.data, f.data.EncryptionKey.nonce)))
+		f.key = ([]byte(Decrypt(pwdHash.Hash, *f.data.EncryptionKey.data, f.data.EncryptionKey.nonce)))
 		fmt.Println(f.key)
 		return true
 	}
 	return false
 }
 
-func (f *File) Read() []byte {
+func (f *File) Read() *[]byte {
 	data, err := os.ReadFile(f.path)
 	if err != nil {
 		fmt.Println("Can't read data file")
 	}
-	return data
+	return &data
 }
 
 func (f * File) UpdateData(text string) bool {
 	if f.encrypted {
 	
 	
-	ctext, nonce := Encrypt(f.key, text)
+	ctext, nonce := Encrypt(&f.key, &text)
 	f.data.Data.data = ctext
 	f.data.Data.nonce = nonce
 	f.Write()
@@ -177,7 +180,7 @@ func (f *File) UpdatePath(p string) bool {
 func (f *File) GetData() string {
 	if f.encrypted {
 		fmt.Println(f.data.Data.nonce)
-		return Decrypt(f.key, f.data.Data.data, f.data.Data.nonce)
+		return Decrypt(f.key, *f.data.Data.data, f.data.Data.nonce)
 	} else {
 		return f.data.plain
 	}
@@ -185,47 +188,43 @@ func (f *File) GetData() string {
 
 func encodeData(fields dataFields) []byte {
 	result := []byte{}
-	if len(fields.pwdHash) > 0 {
-		result = append(result, byte(len(fields.pwdHash)))
+	if len(*fields.pwdHash) > 0 {
+		result = append(result, byte(len(*fields.pwdHash)))
 	}
-	result = append(result, fields.pwdHash...)
-	if len(fields.EncryptionKey.nonce)+len(fields.EncryptionKey.data) > 0 {
-		result = append(result, uint8(len(fields.EncryptionKey.nonce)+len(fields.EncryptionKey.data)))
+	result = append(result, *fields.pwdHash...)
+	if len(fields.EncryptionKey.nonce)+len(*fields.EncryptionKey.data) > 0 {
+		result = append(result, uint8(len(fields.EncryptionKey.nonce)+len(*fields.EncryptionKey.data)))
 	}
 	result = append(result, fields.EncryptionKey.nonce...)
-	result = append(result, fields.EncryptionKey.data...)
+	result = append(result, *fields.EncryptionKey.data...)
 	result = append(result, fields.Data.nonce...)
-	result = append(result, fields.Data.data...)
+	result = append(result, *fields.Data.data...)
 	return result
 }
 
-type Error struct{ message string }
 
-func (e Error) Error() string {
-	return e.message
-}
-
-func decodeData(data []byte) (dataFields, error) {
+func decodeData(data *[]byte) (dataFields, error) {
 	fmt.Println(data)
-	if len(data) > 1 {
-		fmt.Println(int(data[0]))
-		decoder, err := NewDecoder(data)
+	if len(*data) > 1 {
+		fmt.Println(int((*data)[0]))
+		decoder, err := NewDecoder(*data)
 		if err != nil {
 			fmt.Println(err)
+			return dataFields{}, err 
 		}
 		hashLength := decoder.getnBytes(1)
 		df := dataFields{}
-		df.pwdHash = decoder.getnBytes(int(hashLength[0]))
+		df.pwdHash = decoder.getnBytes(int((*hashLength)[0]))
 
-		keyLength := uint8(decoder.getnBytes(1)[0]) - 12
-		df.EncryptionKey.nonce = decoder.getnBytes(12)
+		keyLength := uint8((*decoder.getnBytes(1))[0]) - 12
+		df.EncryptionKey.nonce = *decoder.getnBytes(12)
 		df.EncryptionKey.data = decoder.getnBytes(int(keyLength))
-		if len(data) > decoder.cursor+12 {
-			df.Data.nonce = decoder.getnBytes(12)
+		if len(*data) > decoder.cursor+12 {
+			df.Data.nonce = *decoder.getnBytes(12)
 			df.Data.data = decoder.getnBytes(-1)
 		}
 		return df, nil
 	} else {
-		return dataFields{}, Error{message: "Data length is too short"}
+		return dataFields{}, errors.New("Error parsing data: Empty buffer") 
 	}
 }

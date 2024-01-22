@@ -30,7 +30,7 @@ func TestEncodeData(t *testing.T) {
 	for _, tdata := range testData {
 		encoded := encodeData(tdata)
 		fmt.Println(len(encoded))
-		decode, _ := decodeData(encoded)
+		decode, _ := decodeData(&encoded)
 
 		if !tdata.Compare(decode) {
 			t.Fail()

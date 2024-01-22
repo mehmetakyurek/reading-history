@@ -3,7 +3,11 @@ const colors = require("tailwindcss/colors")
 module.exports = {
   content: ["./src/**/*.tsx"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        slate: colors.slate
+      }
+    },
     colors: {
       "border-color": "#1A1D24",
       "disabled": "#9f9f9f",
@@ -16,7 +20,6 @@ module.exports = {
       'text-header': '#ffffff',
       'rock-100': '#4e536e',
       'rock-300': '#26282e',
-      ...colors
     }
   },
   plugins: [],

@@ -11,7 +11,7 @@ import { addLog, updateLog, removeLog, updateDiaryText } from "../store/reducers
 import { ReactComponent as RemoveButton } from "./styles/img/remove.svg";
 import TitleBar from "./TitleBar";
 
-const DiaryPage: FC = (props): ReactElement => {
+const DiaryPage: FC = (): ReactElement => {
     const history = useNavigate();
     const location = useLocation();
     const [date, setDate] = useState<RDateType>(location.state?.date || new RDate().Date);

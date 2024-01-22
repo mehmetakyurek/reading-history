@@ -2,13 +2,12 @@ import React, { FC, ReactNode, useCallback, useEffect, useMemo, useRef, useState
 import { createPortal, flushSync } from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { BookState, RootState } from "../store";
-import { addBook, move } from "../store/reducers/lists";
+import { move } from "../store/reducers/lists";
 
 import classes from "./styles/LogList.module.scss"
 import { createDateString } from "./util";
 import cn from "classnames"
 import TitleBar from "./TitleBar";
-import { log } from "console";
 
 import { ReactComponent as DeleteIcon } from "./styles/img/delete.svg"
 import { ReactComponent as EditIcon } from "./styles/img/edit.svg"
@@ -77,14 +76,14 @@ const List: FC<{ logs: Array<BookState>, header: string, drag?: (drag?: onDragTy
             const items = [...wrapper.current.children].filter(e => !(e.classList.contains(classes["preview"]))) as Array<HTMLDivElement>;
             if (items.length === 0) setOrder(0);
             for (let i = 0; i < items.length; i++) {
-                if (e.pageY <= wrapper.current.offsetTop ?? 0) {
+                if (e.pageY <= wrapper.current.offsetTop) {
                     flushSync(() => { setOrder(0); })
                     break;
                 }
-                else if (((e.pageY + wrapper.current.scrollTop) >= (((items[items.length - 1]?.offsetTop + wrapper.current.offsetTop) + items[items.length - 1]?.offsetHeight) ?? 0))) {
+                else if (((e.pageY + wrapper.current.scrollTop) >= (((items[items.length - 1]?.offsetTop + wrapper.current.offsetTop) + items[items.length - 1]?.offsetHeight)))) {
                     flushSync(() => { setOrder(items.length); })
                     break;
-                } else if (((e.pageY + wrapper.current.scrollTop) <= ((items[i].offsetTop + wrapper.current.offsetTop) + (items[i].offsetHeight / 2)))) {
+                } else if ((e.pageY + wrapper.current.scrollTop) <= ((items[i].offsetTop + wrapper.current.offsetTop) + (items[i].offsetHeight / 2))) {
                     flushSync(() => { setOrder(i); })
                     break;
                 }
@@ -102,7 +101,7 @@ const List: FC<{ logs: Array<BookState>, header: string, drag?: (drag?: onDragTy
         }
     }, [wrapper.current, setOrder, props.dragItem])
 
-    let interval: NodeJS.Timer;
+    let interval: NodeJS.Timeout;
     let timeOut: NodeJS.Timeout;
 
     return <div
@@ -119,7 +118,7 @@ const List: FC<{ logs: Array<BookState>, header: string, drag?: (drag?: onDragTy
                 calculateOrder(e)
             }, 100)
         }}
-        onMouseUp={e => {
+        onMouseUp={() => {
             clearTimeout(timeOut)
             clearInterval(interval)
             setOrder(-1);

@@ -57,7 +57,7 @@ const ListsSlice = createSlice({
                     }) >= 0
                 )
                 const oldItem = state[oldList].splice(OldId, 1)[0];
-                if (action.payload.order && Number(action.payload.order) !== NaN && action.payload.order > -1)
+                if (action.payload.order && typeof Number(action.payload.order) === 'number' && action.payload.order > -1)
                     state[action.payload.list].splice(action.payload.order!, 0, oldItem)
                 else
                     state[action.payload.list].push(oldItem);

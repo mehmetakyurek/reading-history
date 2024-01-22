@@ -4,6 +4,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
+	"errors"
 	"fmt"
 	"io"
 
@@ -12,17 +13,11 @@ import (
 
 var argon = argon2.DefaultConfig()
 
-type hashError struct {
-	r string
-}
-
-func (e hashError) Error() string {
-	return e.r
-}
 
 func GetHash(pwd string, salt []byte) (argon2.Raw, error) {
 	if len(salt) != int(argon.SaltLength) {
-		return argon2.Raw{}, hashError{r: ("salt length should be " + fmt.Sprint(argon.SaltLength))}
+		return argon2.Raw{},
+		errors.New("Hash length must be: " + fmt.Sprint(argon.SaltLength) + "bytes") 
 	}
 	hash, err := argon.Hash([]byte(pwd), salt)
 	if err != nil {
@@ -57,14 +52,14 @@ func Decrypt(key []byte, ciphertext []byte, nonce []byte) string {
 	return string(plaintext)
 }
 
-func Encrypt(key []byte, text string) (cipherText []byte, nonce []byte) {
+func Encrypt(key *[]byte, text *string) (cipherText *[]byte, nonce []byte) {
 
 	// Load your secret key from a safe place and reuse it across multiple
 	// Seal/Open calls. (Obviously don't use this example key for anything
 	// real.) If you want to convert a passphrase to a key, use a suitable
 	// package like bcrypt or scrypt.
 	// When decoded the key should be 16 bytes (AES-128) or 32 (AES-256).
-	block, err := aes.NewCipher(key)
+	block, err := aes.NewCipher(*key)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -80,6 +75,6 @@ func Encrypt(key []byte, text string) (cipherText []byte, nonce []byte) {
 		panic(err.Error())
 	}
 
-	ciphertext := aesgcm.Seal(nil, nonce, []byte(text), nil)
-	return ciphertext, nonce
+	ciphertext := aesgcm.Seal(nil, nonce, []byte(*text), nil)
+	return &ciphertext, nonce
 }

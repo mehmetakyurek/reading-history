@@ -85,7 +85,7 @@ const AddQuoteOverlay: FC<{ id?: string, OC: number }> = (props): ReactElement =
     const [text, setQuote] = useState<string>("");
     const quote = useSelector((state: RootState) => state.quotes.find(e => e.id === props.id));
     const books = useSelector((state: RootState) => state.lists.flat());
-    const book = useSelector((state: RootState) => state.lists.flat().find(e => e.id === quote?.book ?? ""));
+    const book = useSelector((state: RootState) => state.lists.flat().find(e => e.id === (quote?.book ?? "")));
 
     const dispatch = useDispatch();
 
