@@ -7,22 +7,22 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  setEnv(mode);
-  return {
-    plugins: [
-      react(),
-      tsconfigPaths(),
-      envPlugin(),
-      devServerPlugin(),
-      sourcemapPlugin(),
-      basePlugin(),
-      importPrefixPlugin(),
-      htmlPlugin(mode),
-      svgrPlugin(),
-      
-      
-    ],
-  };
+	setEnv(mode);
+	return {
+		plugins: [
+			react(),
+			tsconfigPaths(),
+			envPlugin(),
+			devServerPlugin(),
+			sourcemapPlugin(),
+			basePlugin(),
+			importPrefixPlugin(),
+			htmlPlugin(mode),
+			svgrPlugin(),
+
+
+		],
+	};
 });
 
 function setEnv(mode: string) {
@@ -33,10 +33,9 @@ function setEnv(mode: string) {
 	process.env.NODE_ENV ||= mode;
 	const { homepage } = JSON.parse(readFileSync("package.json", "utf-8"));
 	process.env.PUBLIC_URL ||= homepage
-		? `${
-				homepage.startsWith("http") || homepage.startsWith("/")
-					? homepage
-					: `/${homepage}`
+		? `${homepage.startsWith("http") || homepage.startsWith("/")
+			? homepage
+			: `/${homepage}`
 			}`.replace(/\/$/, "")
 		: "";
 }
@@ -45,20 +44,20 @@ function setEnv(mode: string) {
 // Migration guide: Follow the guide below to replace process.env with import.meta.env in your app, you may also need to rename your environment variable to a name that begins with VITE_ instead of REACT_APP_
 // https://vitejs.dev/guide/env-and-mode.html#env-variables
 function envPlugin(): Plugin {
-  return {
-    name: "env-plugin",
-    config(_, { mode }) {
-      const env = loadEnv(mode, ".", ["REACT_APP_", "NODE_ENV", "PUBLIC_URL"]);
-      return {
-        define: Object.fromEntries(
-          Object.entries(env).map(([key, value]) => [
-            `process.env.${key}`,
-            JSON.stringify(value),
-          ]),
-        ),
-      };
-    },
-  };
+	return {
+		name: "env-plugin",
+		config(_, { mode }) {
+			const env = loadEnv(mode, ".", ["REACT_APP_", "NODE_ENV", "PUBLIC_URL"]);
+			return {
+				define: Object.fromEntries(
+					Object.entries(env).map(([key, value]) => [
+						`process.env.${key}`,
+						JSON.stringify(value),
+					]),
+				),
+			};
+		},
+	};
 }
 
 // Setup HOST, SSL, PORT
@@ -78,17 +77,17 @@ function devServerPlugin(): Plugin {
 			const https = HTTPS === "true";
 			return {
 				server: {
-					host: HOST || "localhost",
+					host: "localhost",
 					port: parseInt(PORT || "3000", 10),
 					open: false,
 					...(https &&
 						SSL_CRT_FILE &&
 						SSL_KEY_FILE && {
-							https: {
-								cert: readFileSync(resolve(SSL_CRT_FILE)),
-								key: readFileSync(resolve(SSL_KEY_FILE)),
-							},
-						}),
+						https: {
+							cert: readFileSync(resolve(SSL_CRT_FILE)),
+							key: readFileSync(resolve(SSL_KEY_FILE)),
+						},
+					}),
 				},
 			};
 		},
@@ -151,38 +150,38 @@ function importPrefixPlugin(): Plugin {
 // In Create React App, SVGs can be imported directly as React components. This is achieved by svgr libraries.
 // https://create-react-app.dev/docs/adding-images-fonts-and-files/#adding-svgs
 function svgrPlugin(): Plugin {
-  const filter = createFilter("**/*.svg");
-  const postfixRE = /[?#].*$/s;
+	const filter = createFilter("**/*.svg");
+	const postfixRE = /[?#].*$/s;
 
-  return {
-    name: "svgr-plugin",
-    async transform(code, id) {
-      if (filter(id)) {
-        const { transform } = await import("@svgr/core");
-        const { default: jsx } = await import("@svgr/plugin-jsx");
+	return {
+		name: "svgr-plugin",
+		async transform(code, id) {
+			if (filter(id)) {
+				const { transform } = await import("@svgr/core");
+				const { default: jsx } = await import("@svgr/plugin-jsx");
 
-        const filePath = id.replace(postfixRE, "");
-        const svgCode = readFileSync(filePath, "utf8");
+				const filePath = id.replace(postfixRE, "");
+				const svgCode = readFileSync(filePath, "utf8");
 
-        const componentCode = await transform(svgCode, undefined, {
-          filePath,
-          caller: {
-            previousExport: code,
-            defaultPlugins: [jsx],
-          },
-        });
+				const componentCode = await transform(svgCode, undefined, {
+					filePath,
+					caller: {
+						previousExport: code,
+						defaultPlugins: [jsx],
+					},
+				});
 
-        const res = await transformWithEsbuild(componentCode, id, {
-          loader: "jsx",
-        });
+				const res = await transformWithEsbuild(componentCode, id, {
+					loader: "jsx",
+				});
 
-        return {
-          code: res.code,
-          map: null,
-        };
-      }
-    },
-  };
+				return {
+					code: res.code,
+					map: null,
+				};
+			}
+		},
+	};
 }
 
 

@@ -13,11 +13,10 @@ import (
 
 var argon = argon2.DefaultConfig()
 
-
 func GetHash(pwd string, salt []byte) (argon2.Raw, error) {
 	if len(salt) != int(argon.SaltLength) {
 		return argon2.Raw{},
-		errors.New("Hash length must be: " + fmt.Sprint(argon.SaltLength) + "bytes") 
+			errors.New("Hash length must be: " + fmt.Sprint(argon.SaltLength) + "bytes")
 	}
 	hash, err := argon.Hash([]byte(pwd), salt)
 	if err != nil {
