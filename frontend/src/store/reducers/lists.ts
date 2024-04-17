@@ -44,7 +44,7 @@ const ListsSlice = createSlice({
             const index = state[action.payload.list].findIndex(e => e.id === action.payload.id);
             if (index > -1) state[action.payload.list].splice(index, 1);
         },
-        move(state, action: PayloadAction<{ id: string, list: number, order?: number }>) {
+        move(state, action: PayloadAction<{ id: string, list: number, order: number }>) {
 
             if (action.payload.list <= 2 && action.payload.list >= 0) {
                 let OldId = -1;
@@ -57,7 +57,7 @@ const ListsSlice = createSlice({
                     }) >= 0
                 )
                 const oldItem = state[oldList].splice(OldId, 1)[0];
-                if (action.payload.order && typeof Number(action.payload.order) === 'number' && action.payload.order > -1)
+                if (action.payload.order >= 0)
                     state[action.payload.list].splice(action.payload.order!, 0, oldItem)
                 else
                     state[action.payload.list].push(oldItem);
